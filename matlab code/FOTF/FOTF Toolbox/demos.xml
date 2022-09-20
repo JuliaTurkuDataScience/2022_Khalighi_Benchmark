@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<demos><!--此文件是自动生成的，请不要修改-->
+   <name>FOTF Toolbox</name>
+   <type>toolbox</type>
+   <icon>HelpIcon.DEMOS</icon>
+   <website/>
+   <description>Updated version of FOTF Toolbox
+Dedicated to the Tsinghua University Press book, cite as.
+Xue D Y and Bai L.  Fractional Calculus: Numerical Algorithms and Implementations. Beijing: Tsinghua University Press, 2022
+
+Run fotfpath after installation to set Simulink model path</description>
+   <demosection>
+      <label>demo</label>
+      <demoitem>
+         <label>fminsearchbnd_demo</label>
+         <type>other</type>
+         <source>fminsearchbnd_demo</source>
+         <file>fminsearchbnd/demo/html/fminsearchbnd_demo.html</file>
+      </demoitem>
+   </demosection>
+</demos>

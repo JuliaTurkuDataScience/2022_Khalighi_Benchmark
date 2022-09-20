@@ -5,6 +5,10 @@ using FractionalDiffEq, Plots
 using SpecialFunctions
 using CSV, DataFrames
 
+## insert data
+#it should be based on the directory of CSV files on your computer
+push!(LOAD_PATH, "./FDEsolver")
+Mdata = Matrix(CSV.read("BenchSIR.csv", DataFrame, header = 0)) #Benchmark from Matlab
 
 ## inputs
 I0 = 0.1             # intial value of infected
@@ -66,7 +70,7 @@ function JF(t, y, par)
 end
 
 ##scifracx
-function SIR(dy, y, p, t)
+function SIR!(dy, y, p, t)
 
     # System equation
     dy[1] = - .4 * y[1] * y[2]
@@ -78,35 +82,24 @@ end
 Tspan = (0, 100)
 
 y00 = [1 - I0; I0; 0]
-prob = FODESystem(SIR, α, y00, Tspan)
+prob = FODESystem(SIR!, α, y00, Tspan)
 
-t, Yex= FDEsolver(F, tSpan, y0, α, par, JF = JF, h=2^-9) # Solution with a fine step size
+t, Yex= FDEsolver(F, tSpan, y0, α, par, JF = JF, h=2^-10) # Solution with a fine step size
 
-E1 = Float64[]
-T1 = Float64[]
-E2 = Float64[]
-T2 = Float64[]
-E3 = Float64[]
-T3 = Float64[]
-E4 = Float64[]
-T4 = Float64[]
-E5 = Float64[]
-T5 = Float64[]
-E6 = Float64[]
-T6 = Float64[]
-E7 = Float64[]
-T7 = Float64[]
-E8 = Float64[]
-T8 = Float64[]
-E9 = Float64[]
-T9 = Float64[]
-h = Float64[]
+# Benchmarking
+E1 = Float64[];T1 = Float64[];E2 = Float64[];T2 = Float64[]
+E3 = Float64[];T3 = Float64[];E4 = Float64[];T4 = Float64[]
+E5 = Float64[];T5 = Float64[];E6 = Float64[];T6 = Float64[]
+E7 = Float64[];T7 = Float64[];E8 = Float64[];T8 = Float64[]
+E9 = Float64[];T9 = Float64[];h = Float64[]
+
 
 for n in range(2, length=6)
-    println("n: $n")
-    h = 2.0^-n
-    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par) , h=$(h)) seconds=1
-    t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par), JF = JF, h=$(h)) seconds=1
+    println("n: $n")# to print out the current step of runing
+    h = 2.0^-n #stepsize of computting
+        #computting the time
+    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par) , h=$(h), nc=1) seconds=1
+    t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par), JF = JF, h=$(h), nc=1) seconds=1
     t3= @benchmark solve($(prob), $(h), $(GL())) seconds=1
     t4= @benchmark solve($(prob), $(h), $(PIEX())) seconds=1
     t5= @benchmark solve($(prob), $(h), $(NonLinearAlg())) seconds=1
@@ -115,8 +108,19 @@ for n in range(2, length=6)
     t8 = @benchmark solve($(prob), $(h), FLMMTrap()) seconds=1
     t9 = @benchmark solve($(prob), $(h), PECE()) seconds=1
 
-    _, y1 = FDEsolver(F, tSpan, y0, α, par , h=h)
-    _, y2 = FDEsolver(F, tSpan, y0, α, par, JF = JF, h=h)
+    # convert from nano seconds to seconds
+    push!(T1, minimum(t1).time / 10^9)
+    push!(T2, minimum(t2).time / 10^9)
+    push!(T3, minimum(t3).time / 10^9)
+    push!(T4, minimum(t4).time / 10^9)
+    push!(T5, minimum(t5).time / 10^9)
+    push!(T6, minimum(t6).time / 10^9)
+    push!(T7, minimum(t7).time / 10^9)
+    push!(T8, minimum(t8).time / 10^9)
+    push!(T9, minimum(t9).time / 10^9)
+    #computting the error
+    _, y1 = FDEsolver(F, tSpan, y0, α, par , h=h, nc=1)
+    _, y2 = FDEsolver(F, tSpan, y0, α, par, JF = JF, h=h, nc=1)
     y3 =  solve(prob, h, GL())
     y4 =  solve(prob, h, PIEX())
     y5 =  solve(prob, h, NonLinearAlg())
@@ -125,15 +129,15 @@ for n in range(2, length=6)
     y8 = solve(prob, h, FLMMTrap())
     y9 = solve(prob, h, PECE())
 
-    ery1=norm(y1 .- Yex[1:2^(9-n):end,:],2)
-    ery2=norm(y2 .- Yex[1:2^(9-n):end,:],2)
-    ery3=norm(y3.u' .- Yex[1:2^(9-n):end,:],2)
-    ery4=norm(y4.u' .- Yex[1:2^(9-n):end,:],2)
-    ery5=norm(y5.u' .- Yex[1:2^(9-n):end,:],2)
-    ery6=norm(y6.u' .- Yex[1:2^(9-n):end,:],2)
-    ery7=norm(y7.u' .- Yex[1:2^(9-n):end,:],2)
-    ery8=norm(y8.u' .- Yex[1:2^(9-n):end,:],2)
-    ery9=norm(y9.u' .- Yex[1:2^(9-n):end,:],2)
+    ery1=norm(y1 .- Yex[1:2^(10-n):end,:],2)
+    ery2=norm(y2 .- Yex[1:2^(10-n):end,:],2)
+    ery3=norm(y3.u' .- Yex[1:2^(10-n):end,:],2)
+    ery4=norm(y4.u' .- Yex[1:2^(10-n):end,:],2)
+    ery5=norm(y5.u' .- Yex[1:2^(10-n):end,:],2)
+    ery6=norm(y6.u' .- Yex[1:2^(10-n):end,:],2)
+    ery7=norm(y7.u' .- Yex[1:2^(10-n):end,:],2)
+    ery8=norm(y8.u' .- Yex[1:2^(10-n):end,:],2)
+    ery9=norm(y9.u' .- Yex[1:2^(10-n):end,:],2)
 
     push!(E1, ery1)
     push!(E2, ery2)
@@ -144,55 +148,26 @@ for n in range(2, length=6)
     push!(E7, ery7)
     push!(E8, ery8)
     push!(E9, ery9)
-    # convert from nano seconds to seconds
-    push!(T1, minimum(t1).time / 10^9) #why not mean?
-    push!(T2, minimum(t2).time / 10^9)
-    push!(T3, minimum(t3).time / 10^9)
-    push!(T4, minimum(t4).time / 10^9)
-    push!(T5, minimum(t5).time / 10^9)
-    push!(T6, minimum(t6).time / 10^9)
-    push!(T7, minimum(t7).time / 10^9)
-    push!(T8, minimum(t8).time / 10^9)
-    push!(T9, minimum(t9).time / 10^9)
+
 end
 
-push!(LOAD_PATH, "./FDEsolver")
-Mdata = CSV.read("Data_Matlab_SIR.csv", DataFrame, header = 0) #it should be based on the directory of CSV files on your computer
-
-plot(T3, E3,xscale = :log,yscale = :log,linewidth = 5,label = "Julia GL (FractionalDiffEq.jl)", xlabel="Time (sc, Log)", ylabel="Error: 2-norm (Log)")
-
-gr()
-plot(T5, E5, xscale = :log, yscale = :log,linewidth = 5,label = "Julia NonLinearAlg (FractionalDiffEq.jl)", xlabel="Time (sc, Log)", ylabel="Error: 2-norm (Log)")
-plot!(Mdata[!, 3], Mdata[!, 6], linewidth = 5,label = "Matlab PI-EX (Garrappa)", legend = false)
-plot!(T4, E4,linewidth = 5, label = "Julia PI-EX (FractionalDiffEq.jl)")
-plot!(Mdata[!, 1], Mdata[!, 4], linewidth = 5, label = "Matlab PI-PC (Garrappa)")
-plot!(T1, E1, linewidth = 5, markersize = 5, label = "Julia PI-PC (FdeSolver.jl)", shape = :square,
-    linecolor = :black, markercolor = :white, thickness_scaling = 1)
-gr(size=(1200,1000), xtickfontsize=20, ytickfontsize=20, xguidefontsize=20, yguidefontsize=20, legendfontsize=20, dpi=200, grid=(:xy, :gray, :solid, 1, .4));
-plot!(Mdata[!, 2], Mdata[!, 5], linewidth = 5, label = "Matlab P-IM (Garrappa)")
-plot!(T2, E2,linewidth = 5, label = "Julia P-IM (FdeSolver.jl)")
-plot!(T6, E6,linewidth = 5, label = "Julia FLMMBDF (FractionalDiffEq.jl)")
-plot!(T7, E7,linewidth = 5, label = "Julia FLMMNewtonGregory (FractionalDiffEq.jl)")
-plot!(T8, E8,linewidth = 5, label = "Julia FLMMTrap (FractionalDiffEq.jl)")
-plotd= plot!(T9, E9,linewidth = 5, label = "Julia PECE (FractionalDiffEq.jl)", legend = false)
-
-
-# gr(size=(1200,1000), xtickfontsize=20, ytickfontsize=20, xguidefontsize=20, yguidefontsize=20, legendfontsize=20, dpi=200, grid=(:xy, :gray, :solid, 1, .4));
+## plotting
+# plot Matlab and FdeSolver outputs
 plot(T1, E1, xscale = :log, yscale = :log, linewidth = 5, markersize = 5,
-     label = "Julia PI-PC (FdeSolver.jl)", shape = :rect, xlabel="Time (sc, Log)", ylabel="Error: 2-norm (Log)",
-    color = :black, thickness_scaling = 1)
-plot!(T2, E2,linewidth = 5, markersize = 5,label = "Julia P-IM (FdeSolver.jl)", shape = :circle, color = :black)
-plot!(Mdata[!, 1], Mdata[!, 4], linewidth = 5, markersize = 5,label = "Matlab PI-PC (Garrappa)", shape = :rect, color = :red)
-plotd1=plot!(Mdata[!, 2], Mdata[!, 5], linewidth = 5, markersize = 5,label = "Matlab P-IM (Garrappa)", shape = :circle, color = :red)
+     label = "Julia PI-PC (FdeSolver.jl)", shape = :circle, xlabel="Time (sc, Log)", ylabel="Error: 2-norm (Log)",
+    color = :green, thickness_scaling = 1,legend_position= :right)
+plot!(T2, E2,linewidth = 5, markersize = 5,label = "Julia P-IM (FdeSolver.jl)", shape = :rect, color = :green)
+plot!(Mdata[:, 1], Mdata[:, 5], linewidth = 5, markersize = 5,label = "Matlab PI-EX (Garrappa)", shape = :hexagon, color = :red)
+plot!(Mdata[:, 2], Mdata[:, 6], linewidth = 5, markersize = 5,label = "Matlab PI-PC (Garrappa)", shape = :circle, color = :red)
+plot!(Mdata[:, 3], Mdata[:, 7], linewidth = 5, markersize = 5,label = "Matlab PI-IM1 (Garrappa)", shape = :diamond, color = :red)
+plotd1=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 5, markersize = 5,label = "Matlab PI-IM2 (Garrappa)", shape = :rect, color = :red)
 savefig(plotd1,"file1.png")
-
-plot!(T5, E5, xscale = :log, yscale = :log, linewidth = 5, label = "Julia NonLinearAlg (FractionalDiffEq.jl)", shape = :star5)
-# plot!(Mdata[!, 3], Mdata[!, 6], linewidth = 5,label = "Matlab PI-EX (Garrappa)", legend = false)
-plot!(T9, E9,linewidth = 5,  markersize = 5, label = "Julia PECE (FractionalDiffEq.jl)", shape = :diamond)
-plot!(T4, E4,linewidth = 5, markersize = 5, label = "Julia PI-EX (FractionalDiffEq.jl)", shape = :hexagon)
-plot!(T6, E6,linewidth = 5,markersize = 5,  label = "Julia FLMMBDF (FractionalDiffEq.jl)", shape = :xcross)
-plot!(T7, E7,linewidth = 5,markersize = 5,  label = "Julia FLMMNewtonGregory (FractionalDiffEq.jl)", shape = :utriangle)
-plot!(T8, E8,linewidth = 5, markersize = 5, label = "Julia FLMMTrap (FractionalDiffEq.jl)", shape = :pentagon)
-plotd= plot!(T3, E3, linewidth = 5, markersize = 5, label = "Julia GL (FractionalDiffEq.jl)", shape = :dtriangle, legend_position= :outerbottomright)
-# , legend = false
-savefig(plotd,"file.png")
+# plot Scifracx outputs
+plot!(T5, E5, xscale = :log, yscale = :log, linewidth = 5, label = "Julia NonLinearAlg (FractionalDiffEq.jl)", shape = :star5, color = :purple)
+plot!(T9, E9,linewidth = 5,  markersize = 5, label = "Julia PECE (FractionalDiffEq.jl)", shape = :diamond, color = :purple)
+plot!(T4, E4,linewidth = 5, markersize = 5, label = "Julia PI-EX (FractionalDiffEq.jl)", shape = :hexagon, color = :purple)
+plot!(T6, E6,linewidth = 5,markersize = 5,  label = "Julia FLMMBDF (FractionalDiffEq.jl)", shape = :xcross, color = :purple)
+plot!(T7, E7,linewidth = 5,markersize = 5,  label = "Julia FLMMNewtonGregory (FractionalDiffEq.jl)", shape = :utriangle, color = :purple)
+plot!(T8, E8,linewidth = 5, markersize = 5, label = "Julia FLMMTrap (FractionalDiffEq.jl)", shape = :pentagon, color = :purple)
+plotd2= plot!(T3, E3, linewidth = 5, markersize = 5, label = "Julia GL (FractionalDiffEq.jl)", shape = :dtriangle, legend_position= :outerbottomright, color = :purple)
+savefig(plotd2,"file2.png")

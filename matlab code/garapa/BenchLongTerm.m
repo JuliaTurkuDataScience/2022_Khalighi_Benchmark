@@ -16,7 +16,7 @@ n=2;
 Ki=1*rand(N,1); 
 
 %  final time
-T=5000;
+T=100;
 
 
 %Growth rates
@@ -26,7 +26,8 @@ b=2*rand(N,1);
 
 X0=2*rand(N,1); 
 
-H=[2^(-5), 2^(-6),  2^(-7), 2^(-8)];
+H=[2^(-3), 2^(-4),  2^(-5), 2^(-6), 2^(-7)];
+
 t0=0; % initial time
 
 
@@ -51,4 +52,4 @@ figure
 loglog(H,Bench, 'LineWidth',3);
 ylabel("Execution time (Sc)")
 xlabel("step size")
-csvwrite('BenchLongTerm.csv',Bench)
+csvwrite('BenchMicrob.csv',Bench)
