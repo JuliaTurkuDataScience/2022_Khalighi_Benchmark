@@ -15,7 +15,6 @@ tSpan = [0, 10]     # [intial time, final time]
 y0 = [1 1]             # intial value ([of order 0      of order 1])
 α = 2            # order of the derivative
 par = [16.0, 4.0] # [spring constant for a mass on a spring, inertial mass]
-h = 0.01
 
 ## Equation
 function F(t, x, par)
@@ -44,15 +43,15 @@ for n in range(2, length=6)
     println("n: $n")# to print out the current step of runing
     h = 2.0^-n #stepsize of computting
         #computting the time
-    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par) , h=$(h), nc=1) seconds=1
-    t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par), JF = JF, h=$(h), nc=1) seconds=1
+    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par) , h=$(h), tol=1e-6) seconds=1
+    t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par), JF = JF, h=$(h), tol=1e-6) seconds=1
 
     # convert from nano seconds to seconds
     push!(T1, minimum(t1).time / 10^9)
     push!(T2, minimum(t2).time / 10^9)
     #computting the error
-    t, y1 = FDEsolver(F, tSpan, y0, α, par , h=h, nc=1)
-    _, y2 = FDEsolver(F, tSpan, y0, α, par, JF = JF, h=h, nc=1)
+    t, y1 = FDEsolver(F, tSpan, y0, α, par , h=h, tol=1e-6)
+    _, y2 = FDEsolver(F, tSpan, y0, α, par, JF = JF, h=h, tol=1e-6)
 
     Yex = y0[1] .* map(cos, sqrt(par[1] / par[2]) .* t) .+ y0[2] ./ sqrt(par[1] / par[2]) .* map(sin, sqrt(par[1] / par[2]) .* t)
 
@@ -66,12 +65,14 @@ end
 
 ## plotting
 # plot Matlab and FdeSolver outputs
-plot(T1, E1, xscale = :log, yscale = :log, linewidth = 5, markersize = 5,
-     label = "Julia PI-PC (FdeSolver.jl)", shape = :circle, xlabel="Time (sc, Log)", ylabel="Error: 2-norm (Log)",
-    color = :green, thickness_scaling = 1,legend_position= :right)
-plot!(T2, E2,linewidth = 5, markersize = 5,label = "Julia P-IM (FdeSolver.jl)", shape = :rect, color = :green)
-plot!(Mdata[:, 1], Mdata[:, 5], linewidth = 5, markersize = 5,label = "Matlab PI-EX (Garrappa)", shape = :hexagon, color = :red)
-plot!(Mdata[:, 2], Mdata[:, 6], linewidth = 5, markersize = 5,label = "Matlab PI-PC (Garrappa)", shape = :circle, color = :red)
-plot!(Mdata[:, 3], Mdata[:, 7], linewidth = 5, markersize = 5,label = "Matlab PI-IM1 (Garrappa)", shape = :diamond, color = :red)
-plotd1=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 5, markersize = 5,label = "Matlab PI-IM2 (Garrappa)", shape = :rect, color = :red)
-savefig(plotd1,"Harmonic.png")
+plot(T1, E1, xscale = :log, yscale = :log, linewidth = 2, markersize = 5,
+     label = "Julia PC (FdeSolver.jl)", shape = :circle, xlabel="Time (sc, Log)", ylabel="Error: 2-norm (Log)",
+     thickness_scaling = 1,legend_position= :right, c=:blue,fc=:transparent,framestyle=:box, mc=:white)
+plot!(T2, E2,linewidth = 2, markersize = 5,label = "Julia NR (FdeSolver.jl)", shape = :rect, color = :blue, mc=:white)
+plot!(Mdata[:, 1], Mdata[:, 5], linewidth = 2, markersize = 5,label = "Matlab PI-EX (Garrappa)",shape = :rtriangle, color = :red, mc=:white)
+plot!(Mdata[:, 2], Mdata[:, 6], linewidth = 2, markersize = 5,label = "Matlab PI-PC (Garrappa)", shape = :circle, color = :red, mc=:white)
+plot!(Mdata[:, 3], Mdata[:, 7], linewidth = 2, markersize = 5,label = "Matlab PI-IM1 (Garrappa)", shape = :diamond, color = :red, mc=:white)
+pHar=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 2, markersize = 5,label = "Matlab PI-IM2 (Garrappa)", shape = :rect, color = :red, mc=:white)
+
+
+savefig(pHar,"Harmonic.png")
