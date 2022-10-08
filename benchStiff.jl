@@ -1,27 +1,21 @@
-using LinearAlgebra
-using BenchmarkTools
-using FdeSolver
-using FractionalDiffEq, Plots
-using SpecialFunctions
-using CSV, DataFrames
+using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
 
 ## insert data
 #it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./FDEsolver")
+cd("./matlab_code/")
 Mdata = Matrix(CSV.read("BenchStiff.csv", DataFrame, header = 0)) #Benchmark from Matlab
 
 ## inputs
 tSpan = [0, 5]     # [intial time, final time]
 y0 = 1             # intial value
-α = 0.8            # order of the derivative
+β = 0.8            # order of the derivative
 
 λ = -10
 par = λ
 F(t, y, par)= par * y
 JF(t, y, par) = par
 
-t, Yex= FDEsolver(F, tSpan, y0, α, par, JF = JF, h=2^-10, tol=1e-12) # Solution with a fine step size
-
+Exact(t) = mittleff(β, λ * t .^ β)
 # Benchmarking
 E1 = Float64[];T1 = Float64[];E2 = Float64[];T2 = Float64[]
 h = Float64[]
@@ -31,18 +25,18 @@ for n in range(3, 8)
     println("n: $n")# to print out the current step of runing
     h = 2.0^-n #stepsize of computting
         #computting the time
-    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par) , h=$(h), nc=4, tol=1e-6) seconds=1
-    t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par), JF = JF, h=$(h), tol=1e-8) seconds=1
+    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(β), $(par) , h=$(h), nc=4) seconds=1
+    t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(β), $(par), JF = JF, h=$(h), tol=1e-8) seconds=1
 
     # convert from nano seconds to seconds
     push!(T1, minimum(t1).time / 10^9)
     push!(T2, minimum(t2).time / 10^9)
     #computting the error
-    _, y1 = FDEsolver(F, tSpan, y0, α, par , h=h, nc=4, tol=1e-6)
-    _, y2 = FDEsolver(F, tSpan, y0, α, par, JF = JF, h=h,tol=1e-8)
+    _, y1 = FDEsolver(F, tSpan, y0, β, par , h=h, nc=4)
+    _, y2 = FDEsolver(F, tSpan, y0, β, par, JF = JF, h=h,tol=1e-8)
 
-    ery1=norm(y1 .- Yex[1:2^(10-n):end,:],2)
-    ery2=norm(y2 .- Yex[1:2^(10-n):end,:],2)
+    ery1=norm(y1 - map(Exact, tt1), 2)
+    ery2=norm(y2 - map(Exact, tt2), 2)
 
     push!(E1, ery1)
     push!(E2, ery2)

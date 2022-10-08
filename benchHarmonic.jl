@@ -1,13 +1,8 @@
-using LinearAlgebra
-using BenchmarkTools
-using FdeSolver
-using FractionalDiffEq, Plots
-using SpecialFunctions
-using CSV, DataFrames
+using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
 
 ## insert data
 #it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./FDEsolver")
+cd("./matlab_code/")
 Mdata = Matrix(CSV.read("BenchHarmonic.csv", DataFrame, header = 0)) #Benchmark from Matlab
 
 ## inputs
@@ -43,15 +38,15 @@ for n in range(2, length=6)
     println("n: $n")# to print out the current step of runing
     h = 2.0^-n #stepsize of computting
         #computting the time
-    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par) , h=$(h), tol=1e-6) seconds=1
-    t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par), JF = JF, h=$(h), tol=1e-6) seconds=1
+    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par) , h=$(h)) seconds=1
+    t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par), JF = JF, h=$(h)) seconds=1
 
     # convert from nano seconds to seconds
     push!(T1, minimum(t1).time / 10^9)
     push!(T2, minimum(t2).time / 10^9)
     #computting the error
-    t, y1 = FDEsolver(F, tSpan, y0, α, par , h=h, tol=1e-6)
-    _, y2 = FDEsolver(F, tSpan, y0, α, par, JF = JF, h=h, tol=1e-6)
+    t, y1 = FDEsolver(F, tSpan, y0, α, par , h=h)
+    _, y2 = FDEsolver(F, tSpan, y0, α, par, JF = JF, h=h)
 
     Yex = y0[1] .* map(cos, sqrt(par[1] / par[2]) .* t) .+ y0[2] ./ sqrt(par[1] / par[2]) .* map(sin, sqrt(par[1] / par[2]) .* t)
 

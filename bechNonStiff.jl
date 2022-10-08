@@ -1,11 +1,8 @@
-using LinearAlgebra
-using BenchmarkTools
-using FdeSolver
-using FractionalDiffEq, Plots
-using SpecialFunctions
-using CSV, DataFrames
+using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
 
-push!(LOAD_PATH, "./FDEsolver")
+## insert data
+#it should be based on the directory of CSV files on your computer
+cd("./matlab_code/")
 Mdata = CSV.read("BenchNonStiff.csv", DataFrame, header = 0) #it should be based on the directory of CSV files on your computer
 ## inputs
 tSpan = [0, 1]     # [intial time, final time]
@@ -31,10 +28,10 @@ h = Float64[]
 for n in range(3, 8)
     println("n: $n")
     h = 2.0^-n # step size
-    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(β), $(par) , h=$(h), tol=1e-6) seconds=1
+    t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(β), $(par) , h=$(h)) seconds=1
     t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(β), $(par), JF = JF, h=$(h), tol=1e-8) seconds=1
 
-    tt1, y1 = FDEsolver(F, tSpan, y0, β, par, h=h, tol=1e-6)
+    tt1, y1 = FDEsolver(F, tSpan, y0, β, par, h=h)
     tt2, y2= FDEsolver(F, tSpan, y0, β, par, JF = JF, h=h, tol=1e-8)
 
     ery1=norm(y1 - map(Exact, tt1), 2)

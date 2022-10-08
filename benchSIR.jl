@@ -1,13 +1,8 @@
-using LinearAlgebra
-using BenchmarkTools
-using FdeSolver
-using FractionalDiffEq, Plots
-using SpecialFunctions
-using CSV, DataFrames
+using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
 
 ## insert data
 #it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./FDEsolver")
+cd("./matlab_code/")
 Mdata = Matrix(CSV.read("BenchSIR.csv", DataFrame, header = 0)) #Benchmark from Matlab
 
 ## inputs

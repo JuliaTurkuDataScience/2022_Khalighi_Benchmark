@@ -1,13 +1,8 @@
-using LinearAlgebra
-using BenchmarkTools
-using FdeSolver
-using FractionalDiffEq, Plots
-using SpecialFunctions
-using CSV, DataFrames
+using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
 
 ## insert data
 #it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./FDEsolver")
+cd("./matlab_code/")
 Mdata = Matrix(CSV.read("BenchLV.csv", DataFrame, header = 0)) #Benchmark from Matlab
 
 ## inputs
@@ -16,7 +11,7 @@ y0 = [1,1,1]   # initial values [X1(0),X2(0),X3(0)]
 α = [1, .9, .7]          # order of derivatives
 
 ## ODE model
-par = [3,3,3,5,3,3,3] 
+par = [3,3,3,5,3,3,3]
 
 function F(t, x, par)
 
