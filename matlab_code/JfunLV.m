@@ -1,3 +1,5 @@
+%jacobian of Three-Species Lotka-Volterra Model 
+%https://www.mdpi.com/2073-8994/13/3/368
 function dJ=JfunLV(t,x,param)
 
 a1=param.a1;
