@@ -124,7 +124,7 @@ savefig(plotd2,"LV3_1.svg")
 
 
 # plot the dynamics
-dynamicLV=plot(t[1:100:end],Yex[1:100:end,:], linewidth = 2,
+dynamicLV=plot(t[1:100:end],Yex[1:100:end,:], linewidth = 3,
                 xlabel="Time", ylabel="Abundance of species" ,
                 thickness_scaling = 1 , framestyle=:box, labels=["X1" "X2" "X3"])
 savefig(dynamicLV,"dynamicLV.svg")

@@ -75,6 +75,14 @@ plot!(T2[1:end], E2[1:end],linewidth = 3,label = "J-NR", shape = :rect)
 plot!(Mdata[2:end, 1], Mdata[2:end, 5], linewidth = 3, label = "M-PI-EX",shape = :rtriangle)
 plot!(Mdata[1:end, 3], Mdata[1:end, 7], linewidth = 3, label = "M-PI-IM1", shape = :diamond)
 plot!(Mdata[2:end, 2], Mdata[2:end, 6], linewidth =3, label = "M-PI-PC", shape = :circle)
-pStiff3=plot!(Mdata[1:end, 4], Mdata[1:end, 8], linewidth = 3, markersize = 5,label = "M-PI-IM2",shape = :rect)
+pStiff3=plot!(Mdata[1:end, 4], Mdata[1:end, 8], linewidth = 3, markersize = 5,label = "M-PI-IM2",shape = :rect, legend=:false)
 
 savefig(pStiff3,"Stiff3.svg")
+
+
+#save data
+using Tables
+CSV.write("Stiff_E1.csv",  Tables.table(E1))
+CSV.write("Stiff_E2.csv",  Tables.table(E2))
+CSV.write("Stiff_T1.csv",  Tables.table(T1))
+CSV.write("Stiff_T2.csv",  Tables.table(T2))

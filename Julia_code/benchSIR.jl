@@ -171,3 +171,22 @@ plot!(T7, E7,linewidth = 3,markersize = 5,  label = "J-FLMMNewtonG", shape = :dt
 pSIR2=plot!(T8, E8,linewidth = 3, markersize = 5, label = "J-FLMMTrap", shape = :pentagon, legend=false)
 
 savefig(pSIR2,"pSIR2.svg")
+
+#save data
+using Tables
+CSV.write("SIR_E1.csv",  Tables.table(E1))
+CSV.write("SIR_E2.csv",  Tables.table(E2))
+CSV.write("SIR_E3.csv",  Tables.table(E3))
+CSV.write("SIR_E4.csv",  Tables.table(E4))
+CSV.write("SIR_E5.csv",  Tables.table(E5))
+CSV.write("SIR_E6.csv",  Tables.table(E6))
+CSV.write("SIR_E7.csv",  Tables.table(E7))
+CSV.write("SIR_E8.csv",  Tables.table(E8))
+CSV.write("SIR_T1.csv",  Tables.table(T1))
+CSV.write("SIR_T2.csv",  Tables.table(T2))
+CSV.write("SIR_T3.csv",  Tables.table(T3))
+CSV.write("SIR_T4.csv",  Tables.table(T4))
+CSV.write("SIR_T5.csv",  Tables.table(T5))
+CSV.write("SIR_T6.csv",  Tables.table(T6))
+CSV.write("SIR_T7.csv",  Tables.table(T7))
+CSV.write("SIR_T8.csv",  Tables.table(T8))

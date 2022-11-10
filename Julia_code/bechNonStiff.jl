@@ -58,3 +58,10 @@ pNonStiff=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 3, markersize = 5,label = 
 
 
 savefig(pNonStiff,"NonStiff.svg")
+
+#save data
+using Tables
+CSV.write("NonStiff_E1.csv",  Tables.table(E1))
+CSV.write("NonStiff_E2.csv",  Tables.table(E2))
+CSV.write("NonStiff_T1.csv",  Tables.table(T1))
+CSV.write("NonStiff_T2.csv",  Tables.table(T2))

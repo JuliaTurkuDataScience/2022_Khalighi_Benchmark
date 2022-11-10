@@ -66,7 +66,14 @@ plot!(T2, E2,linewidth = 3, markersize = 5,label = "J-NR", shape = :rect)
 plot!(Mdata[:, 1], Mdata[:, 5], linewidth = 3, markersize = 5,label = "M-PI-EX",shape = :rtriangle)
 plot!(Mdata[:, 3], Mdata[:, 7], linewidth = 3, markersize = 5,label = "M-PI-IM1", shape = :diamond)
 plot!(Mdata[:, 2], Mdata[:, 6], linewidth = 3, markersize = 5,label = "M-PI-PC", shape = :circle)
-pHar=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 3, markersize = 5,label = "M-PI-IM2", shape = :rect)
+pHar=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 3, markersize = 5,label = "M-PI-IM2", shape = :rect, legend=:false)
 
 
 savefig(pHar,"Harmonic.svg")
+
+#save data
+using Tables
+CSV.write("Harmonic_E1.csv",  Tables.table(E1))
+CSV.write("Harmonic_E2.csv",  Tables.table(E2))
+CSV.write("Harmonic_T1.csv",  Tables.table(T1))
+CSV.write("Harmonic_T2.csv",  Tables.table(T2))
