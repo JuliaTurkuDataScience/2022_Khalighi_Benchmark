@@ -3,6 +3,8 @@ using StatsPlots
 theme(:ggplot2)
 
 nonstiff_benchmark = CSV.read("data/nonstiff_benchmark.csv", DataFrame, header = 1)
+random_params_benchmark = CSV.read("data/random_params_benchmark.csv", DataFrame, header = 1)
+
 # Data from Matlab
 matlab_dir = "data_matlab"
 
@@ -147,8 +149,6 @@ PltMD=plot(p4, p5, p6, layout = l2,size = (600, 500))
 
 
 #### plot randoms
-
-random_params_benchmark = CSV.read("data/random_params_benchmark.csv", DataFrame, header = 1)
 
 for (plot_idx, method) in enumerate(unique(random_params_benchmark.Method))
     method_subset = filter(:Method => x -> x == method, random_params_benchmark)
