@@ -2,10 +2,10 @@ using Plots, CSV, DataFrames
 using StatsPlots
 theme(:ggplot2)
 
+nonstiff_benchmark = CSV.read("data/nonstiff_benchmark.csv", DataFrame, header = 1)
 # Data from Matlab
 matlab_dir = "data_matlab"
 
-M_NonStiff = CSV.read(joinpath(matlab_dir, "BenchNonStiff.csv"), DataFrame, header = 0)
 M_Stiff = CSV.read(joinpath(matlab_dir, "BenchStiff.csv"), DataFrame, header = 0)
 M_Harmonic = CSV.read(joinpath(matlab_dir, "BenchHarmonic.csv"), DataFrame, header = 0)
 M_SIR = CSV.read(joinpath(matlab_dir, "BenchSIR.csv"), DataFrame, header = 0)
@@ -13,13 +13,6 @@ M_LV = CSV.read(joinpath(matlab_dir, "BenchLV.csv"), DataFrame, header = 0)
 
 # Data from Julia
 julia_dir = "data_Julia"
-
-J_Nonstiff_E1 = CSV.read(joinpath(julia_dir, "NonStiff_E1.csv"), DataFrame, header = 1)
-J_Nonstiff_E2 = CSV.read(joinpath(julia_dir, "NonStiff_E2.csv"), DataFrame, header = 1)
-J_Nonstiff_T1 = CSV.read(joinpath(julia_dir, "NonStiff_T1.csv"), DataFrame, header = 1)
-J_Nonstiff_T2 = CSV.read(joinpath(julia_dir, "NonStiff_T2.csv"), DataFrame, header = 1)
-
-J_Nonstiff = innerjoin(J_Nonstiff_E1, J_Nonstiff_E2, )
 
 J_stiff_E1 = CSV.read(joinpath(julia_dir, "Stiff_E1.csv"), DataFrame, header = 1)
 J_stiff_E2 = CSV.read(joinpath(julia_dir, "Stiff_E2.csv"), DataFrame, header = 1)
@@ -58,15 +51,30 @@ J_SIR_T9 = CSV.read(joinpath(julia_dir, "SIR_T9.csv"), DataFrame, header = 1)
 
 ## plot Examples
 
-plot(J_Nonstiff_T1[:,1], J_Nonstiff_E1[:,1], xscale = :log, yscale = :log,
-        legend_position=:bottomleft,
-     label = "J-PC", shape = :circle, thickness_scaling = 1, framestyle=:box)
- plot!(J_Nonstiff_T2[:,1], J_Nonstiff_E2[:,1],label = "J-NR", shape = :rect)
- plot!(M_NonStiff[:, 1], M_NonStiff[:, 5],label = "M-PI-EX",shape = :rtriangle)
- plot!(M_NonStiff[:, 3], M_NonStiff[:, 7], label = "M-PI-IM1", shape = :diamond)
- plot!(M_NonStiff[:, 2], M_NonStiff[:, 6],label = "M-PI-PC", shape = :circle)
- p1=plot!(M_NonStiff[:, 4], M_NonStiff[:, 8],label = "M-PI-IM2", shape = :rect,
-    title = "(a)", titleloc = :left, titlefont = font(10),legend=:false)
+for (plot_idx, method) in enumerate(unique(nonstiff_benchmark.Method))
+    method_subset = filter(:Method => x -> x == method, nonstiff_benchmark)
+    if plot_idx == 1
+        p1 = plot(method_subset.ExecutionTime,
+             method_subset.Error,
+             scale = :log,
+             label = method,
+             markersize = 3,
+             shape = :circle,
+             title = "(a)",
+             titleloc = :left,
+             titlefont = font(10),
+             xlabel = "Execution time (sc, Log)",
+             ylabel = "Error: 2-norm (Log)",
+             legendposition = :bottomleft)
+    else
+        plot!(method_subset.ExecutionTime,
+              method_subset.Error,
+              label = method,
+              markersize = 3,
+              shape = :circle)
+    end
+    display(p1)
+end
 
 plot(J_stiff_T1[2:end,1], J_stiff_E1[2:end,1], xscale = :log, yscale = :log,
          legend_position=:bottomleft,
@@ -128,14 +136,14 @@ p6=plot(DynLV[:,1],Matrix(DynLV[:,2:4]),xlabel="Time", ylabel="Abundance of spec
 # P=plot(p1, p2, p3, layout = (2,2) , size = (1000, 1000))
 
 # l = @layout [a b; c{.8w} _]
-l = @layout [[grid(2,1)] b{.5w}]
+l1 = @layout [[grid(2,1)] b{.5w}]
 # plot(p1, p2, p3,p4, layout = grid(3, 2, widths=[.14 ,0.4, 4,.4]) )
-Plt1D=plot(p1, p3, p2, layout = l)
+Plt1D=plot(p1, p3, p2, layout = l1)
 
 
-l = @layout [b{.6h}; grid(1,2)]
+l2 = @layout [b{.6h}; grid(1,2)]
 # plot(p1, p2, p3,p4, layout = grid(3, 2, widths=[.14 ,0.4, 4,.4]) )
-PltMD=plot(p4, p5, p6, layout = l,size = (600, 500))
+PltMD=plot(p4, p5, p6, layout = l2,size = (600, 500))
 
 
 #### plot randoms
@@ -160,7 +168,7 @@ for (plot_idx, method) in enumerate(unique(random_params_benchmark.Method))
                  label = method,
                  markersize = 3)
     end
-    display(p)
+    display(p7)
 end
 
 p8 = @df random_params_benchmark boxplot(:Method, :Error,
