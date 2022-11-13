@@ -3,23 +3,12 @@ using StatsPlots
 theme(:ggplot2)
 
 nonstiff_benchmark = CSV.read("data/nonstiff_benchmark.csv", DataFrame, header = 1)
+stiff_benchmark = CSV.read("data/stiff_benchmark.csv", DataFrame, header = 1)
 random_params_benchmark = CSV.read("data/random_params_benchmark.csv", DataFrame, header = 1)
 
-# Data from Matlab
-matlab_dir = "data_matlab"
-
-M_Stiff = CSV.read(joinpath(matlab_dir, "BenchStiff.csv"), DataFrame, header = 0)
 M_Harmonic = CSV.read(joinpath(matlab_dir, "BenchHarmonic.csv"), DataFrame, header = 0)
 M_SIR = CSV.read(joinpath(matlab_dir, "BenchSIR.csv"), DataFrame, header = 0)
 M_LV = CSV.read(joinpath(matlab_dir, "BenchLV.csv"), DataFrame, header = 0)
-
-# Data from Julia
-julia_dir = "data_Julia"
-
-J_stiff_E1 = CSV.read(joinpath(julia_dir, "Stiff_E1.csv"), DataFrame, header = 1)
-J_stiff_E2 = CSV.read(joinpath(julia_dir, "Stiff_E2.csv"), DataFrame, header = 1)
-J_stiff_T1 = CSV.read(joinpath(julia_dir, "Stiff_T1.csv"), DataFrame, header = 1)
-J_stiff_T2 = CSV.read(joinpath(julia_dir, "Stiff_T2.csv"), DataFrame, header = 1)
 
 J_Harmonic_E1 = CSV.read(joinpath(julia_dir, "Harmonic_E1.csv"), DataFrame, header = 1)
 J_Harmonic_E2 = CSV.read(joinpath(julia_dir, "Harmonic_E2.csv"), DataFrame, header = 1)
@@ -78,16 +67,30 @@ for (plot_idx, method) in enumerate(unique(nonstiff_benchmark.Method))
     display(p1)
 end
 
-plot(J_stiff_T1[2:end,1], J_stiff_E1[2:end,1], xscale = :log, yscale = :log,
-         legend_position=:bottomleft,
-     label = "J-PC", shape = :circle, thickness_scaling = 1, framestyle=:box)
- plot!(J_stiff_T2[:,1], J_stiff_E2[:,1],label = "J-NR", shape = :rect)
- plot!(M_Stiff[2:end, 1], M_Stiff[2:end, 5], label = "M-PI-EX",shape = :rtriangle)
- plot!(M_Stiff[:, 3], M_Stiff[:, 7], label = "M-PI-IM1", shape = :diamond)
- plot!(M_Stiff[2:end, 2], M_Stiff[2:end, 6], label = "M-PI-PC", shape = :circle)
- p2=plot!(M_Stiff[:, 4], M_Stiff[:, 8], label = "M-PI-IM2", shape = :rect,legendfontsize=6,
- title = "(b)", titleloc = :left, titlefont = font(10),legendposition=:outerbottom)
-
+for (plot_idx, method) in enumerate(unique(stiff_benchmark.Method))
+    method_subset = filter(:Method => x -> x == method, stiff_benchmark)
+    if plot_idx == 1
+        p2 = plot(method_subset.ExecutionTime,
+            method_subset.Error,
+            scale = :log,
+            label = method,
+            markersize = 3,
+            shape = :circle,
+            title = "(b)",
+            titleloc = :left,
+            titlefont = font(10),
+            xlabel = "Execution time (sc, Log)",
+            ylabel = "Error: 2-norm (Log)",
+            legendposition = :best)
+    else
+        plot!(method_subset.ExecutionTime,
+            method_subset.Error,
+            label = method,
+            markersize = 3,
+            shape = :circle)
+    end
+    display(p2)
+end
 
 plot(J_Harmonic_T1[:,1], J_Harmonic_E1[:,1], xscale = :log, yscale = :log,
          legend_position=:bottomleft,
