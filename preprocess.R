@@ -54,3 +54,86 @@ integrate_data("data/stiff_benchmark.csv", "data_matlab/BenchStiff.csv",
 integrate_data("data/harmonic_benchmark.csv", "data_matlab/BenchHarmonic.csv",
                "data_Julia/Harmonic_E1.csv", "data_Julia/Harmonic_T1.csv",
                "data_Julia/Harmonic_E2.csv", "data_Julia/Harmonic_T2.csv")
+
+integrate_data("data/lotka_volterra_benchmark.csv", "data_matlab/BenchLV.csv",
+               "data_Julia/LV_E1.csv", "data_Julia/LV_T1.csv",
+               "data_Julia/LV_E2.csv", "data_Julia/LV_T2.csv")
+
+sir_time_df1 <- read_csv("data_Julia/SIR_T1.csv")
+sir_error_df1 <- read_csv("data_Julia/SIR_E1.csv")
+sir_time_df2 <- read_csv("data_Julia/SIR_T2.csv")
+sir_error_df2 <- read_csv("data_Julia/SIR_E2.csv")
+sir_time_df3 <- read_csv("data_Julia/SIR_T3.csv")
+sir_error_df3 <- read_csv("data_Julia/SIR_E3.csv")
+sir_time_df4 <- read_csv("data_Julia/SIR_T4.csv")
+sir_error_df4 <- read_csv("data_Julia/SIR_E4.csv")
+sir_time_df5 <- read_csv("data_Julia/SIR_T5.csv")
+sir_error_df5 <- read_csv("data_Julia/SIR_E5.csv")
+sir_time_df6 <- read_csv("data_Julia/SIR_T6.csv")
+sir_error_df6 <- read_csv("data_Julia/SIR_E6.csv")
+sir_time_df7 <- read_csv("data_Julia/SIR_T7.csv")
+sir_error_df7 <- read_csv("data_Julia/SIR_E7.csv")
+sir_time_df8 <- read_csv("data_Julia/SIR_T8.csv")
+sir_error_df8 <- read_csv("data_Julia/SIR_E8.csv")
+sir_time_df9 <- read_csv("data_Julia/SIR_T9.csv")
+sir_error_df9 <- read_csv("data_Julia/SIR_E9.csv")
+
+sir_df1 <- data.frame("Error" = sir_error_df1$Column1,
+                      "ExecutionTime" = sir_time_df1$Column1,
+                      "Method" = "J-1")
+sir_df2 <- data.frame("Error" = sir_error_df2$Column1,
+                      "ExecutionTime" = sir_time_df2$Column1,
+                      "Method" = "J-2")
+sir_df3 <- data.frame("Error" = sir_error_df3$Column1,
+                      "ExecutionTime" = sir_time_df3$Column1,
+                      "Method" = "J-3")
+sir_df4 <- data.frame("Error" = sir_error_df4$Column1,
+                      "ExecutionTime" = sir_time_df4$Column1,
+                      "Method" = "J-PI-EX")
+sir_df5 <- data.frame("Error" = sir_error_df5$Column1,
+                      "ExecutionTime" = sir_time_df5$Column1,
+                      "Method" = "J-NonLinearAlg")
+sir_df6 <- data.frame("Error" = sir_error_df6$Column1,
+                        "ExecutionTime" = sir_time_df6$Column1,
+                        "Method" = "J-FLMMBDF")
+sir_df7 <- data.frame("Error" = sir_error_df7$Column1,
+                      "ExecutionTime" = sir_time_df7$Column1,
+                      "Method" = "J-FLMMNewtonG")
+sir_df8 <- data.frame("Error" = sir_error_df8$Column1,
+                      "ExecutionTime" = sir_time_df8$Column1,
+                      "Method" = "J-FLMMTrap")
+sir_df9 <- data.frame("Error" = sir_error_df9$Column1,
+                      "ExecutionTime" = sir_time_df9$Column1,
+                      "Method" = "J-PECE")
+
+sir_matlab_df <- read_csv("data_matlab/BenchSIR.csv", col_names = FALSE)
+
+sir_matlab_df1 <- data.frame("Error" = sir_matlab_df$X5,
+                             "ExecutionTime" = sir_matlab_df$X1,
+                             "Method" = "M-PI-EX")
+sir_matlab_df2 <- data.frame("Error" = sir_matlab_df$X6,
+                             "ExecutionTime" = sir_matlab_df$X2,
+                             "Method" = "M-PI-PC")
+sir_matlab_df3 <- data.frame("Error" = sir_matlab_df$X7,
+                             "ExecutionTime" = sir_matlab_df$X3,
+                             "Method" = "M-PI-IM1")
+sir_matlab_df4 <- data.frame("Error" = sir_matlab_df$X8,
+                             "ExecutionTime" = sir_matlab_df$X4,
+                             "Method" = "M-PI-IM2")
+
+sir_benchmark_df <- sir_df1 %>%
+  full_join(sir_df2) %>%
+  full_join(sir_df3) %>%
+  full_join(sir_df4) %>%
+  full_join(sir_df5) %>%
+  full_join(sir_df6) %>%
+  full_join(sir_df7) %>%
+  full_join(sir_df8) %>%
+  full_join(sir_df9) %>%
+  full_join(sir_matlab_df1) %>%
+  full_join(sir_matlab_df2) %>%
+  full_join(sir_matlab_df3) %>%
+  full_join(sir_matlab_df4)
+
+write_csv(sir_benchmark_df,
+          file = "data/sir_benchmark.csv")
