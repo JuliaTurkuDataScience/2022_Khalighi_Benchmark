@@ -92,6 +92,9 @@ benchmark_df <- pc_df %>%
   full_join(matlab_method3_df) %>%
   full_join(matlab_method4_df)
 
+# write_csv(benchmark_df,
+#           "data/rnd_params_benchmark.csv")
+
 # benchmark_df <- benchmark_df %>%
 #   filter(Error < 500)
 

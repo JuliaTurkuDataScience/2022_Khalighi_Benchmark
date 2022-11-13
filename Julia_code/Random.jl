@@ -278,3 +278,37 @@ CSV.write("ErrRnd3.csv",  Tables.table(E3))
 CSV.write("tRnd1.csv",  Tables.table(T1))
 CSV.write("tRnd2.csv",  Tables.table(T2))
 CSV.write("tRnd3.csv",  Tables.table(T3))
+#
+# J_E1 = CSV.read("ErrRnd1.csv", DataFrame, header = 1)
+# J_E2 = CSV.read("ErrRnd2.csv", DataFrame, header = 1)
+# J_T1 = CSV.read("tRnd1.csv", DataFrame, header = 1)
+# J_T2 = CSV.read("tRnd2.csv", DataFrame, header = 1)
+# J_E3 = CSV.read("ErrRnd3.csv", DataFrame, header = 1)
+# J_T3 = CSV.read("tRnd3.csv", DataFrame, header = 1)
+#
+# # plotting
+# scatter(J_T1[:,1], J_E1[:,1], xscale = :log, yscale = :log, linewidth = 3, markersize = 5,
+#      label = "J-PC", shape = :circle, xlabel="Execution time (sc, Log)", ylabel="Error: 2-norm (Log)",
+#      thickness_scaling = 1,legend_position= :bottomleft, fc=:transparent,framestyle=:box)
+# scatter!(J_T2[:,1], J_E2[:,1],linewidth = 3, markersize = 5,label = "J-NR", shape = :rect)
+# scatter!(J_T3[:,1], J_E3[:,1],linewidth = 3,  markersize = 5, label = "J-PECE", shape = :circle)
+#
+# Mt1=vcat(M_Ex1.Bench1_1,M_Ex2.Bench2_1,M_Ex3.Bench3_1,M_Ex4.Bench4_1)
+# Merr1=vcat(M_Ex1.Bench1_5,M_Ex2.Bench2_5,M_Ex3.Bench3_5,M_Ex4.Bench4_5)
+#
+# Mt2=vcat(M_Ex1.Bench1_2,M_Ex2.Bench2_2,M_Ex3.Bench3_2,M_Ex4.Bench4_2)
+# Merr2=vcat(M_Ex1.Bench1_6,M_Ex2.Bench2_6,M_Ex3.Bench3_6,M_Ex4.Bench4_6)
+#
+# Mt3=vcat(M_Ex1.Bench1_3,M_Ex2.Bench2_3,M_Ex3.Bench3_3,M_Ex4.Bench4_3)
+# Merr3=vcat(M_Ex1.Bench1_7,M_Ex2.Bench2_7,M_Ex3.Bench3_7,M_Ex4.Bench4_7)
+#
+# Mt4=vcat(M_Ex1.Bench1_4,M_Ex2.Bench2_4,M_Ex3.Bench3_4,M_Ex4.Bench4_4)
+# Merr4=vcat(M_Ex1.Bench1_8,M_Ex2.Bench2_8,M_Ex3.Bench3_8,M_Ex4.Bench4_8)
+#
+# scatter!(Mt1, Merr1, linewidth = 3, markersize = 5,label = "M-PI-EX",shape = :rtriangle)
+# scatter!(Mt3, Merr3, linewidth = 3, markersize = 5,label = "M-PI-IM1", shape = :diamond)
+# scatter!(Mt2, Merr2, linewidth = 3, markersize = 5,label = "M-PI-PC", shape = :circle)
+# plttt=scatter!(Mt4, Merr4, linewidth = 3, markersize = 5,label = "M-PI-IM2", shape = :rect)
+#
+# savefig(plttt,"plttt.png")
+#
