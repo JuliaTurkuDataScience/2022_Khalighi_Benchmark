@@ -64,16 +64,16 @@ function LV!(dx, x, p, t)
     dx[3] = x[3]*(1-a5+a6*x[1]+a7*x[2])
 end
 
-Tspan = (0, 60)
+# Tspan = (0, 60)
 
-y00 = [1;1;1]
-prob = FODESystem(LV!, α, y00, Tspan)
+# y00 = [1;1;1]
+# prob = FODESystem(LV!, α, y00, Tspan)
 
 t, Yex= FDEsolver(F, tSpan, y0, α, par, JF = JF, h=2^-10, tol=1e-12) # Solution with a fine step size
 Norm2Ex=norm(Yex .- M_ExactLV3',2) # norm2 of solutions with fine stepsize in Matlab and Julia
 # Benchmarking
 E1 = Float64[];T1 = Float64[];E2 = Float64[];T2 = Float64[]
-E3 = Float64[];T3 = Float64[];
+# E3 = Float64[];T3 = Float64[];
 h = Float64[]
 
 
@@ -83,24 +83,24 @@ for n in range(4,8)
         #computting the time
     t1= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par) , h=$(h), nc=4, tol =1e-8) seconds=1
     t2= @benchmark FDEsolver(F, $(tSpan), $(y0), $(α), $(par), JF = JF, h=$(h), tol=1e-8) seconds=1
-    t3 = @benchmark solve($(prob), $(h), PECE()) seconds=1
+    # t3 = @benchmark solve($(prob), $(h), PECE()) seconds=1
 
     # convert from nano seconds to seconds
     push!(T1, mean(t1).time / 10^9)
     push!(T2, mean(t2).time / 10^9)
-    push!(T3, mean(t3).time / 10^9)
+    # push!(T3, mean(t3).time / 10^9)
     #computting the error
     _, y1 = FDEsolver(F, tSpan, y0, α, par , h=h, nc=4, tol =1e-8)
     _, y2 = FDEsolver(F, tSpan, y0, α, par, JF = JF, h=h, tol=1e-8)
-    y3 = solve(prob, h, PECE())
+    # y3 = solve(prob, h, PECE())
 
     ery1=norm(y1 .- Yex[1:2^(10-n):end,:],2)
     ery2=norm(y2 .- Yex[1:2^(10-n):end,:],2)
-    ery3=norm(y3.u' .- Yex[1:2^(10-n):end,:],2)
+    # ery3=norm(y3.u' .- Yex[1:2^(10-n):end,:],2)
 
     push!(E1, ery1)
     push!(E2, ery2)
-    push!(E3, ery3)
+    # push!(E3, ery3)
 
 end
 
@@ -128,3 +128,14 @@ dynamicLV=plot(t[1:100:end],Yex[1:100:end,:], linewidth = 3,
                 xlabel="Time", ylabel="Abundance of species" ,
                 thickness_scaling = 1 , framestyle=:box, labels=["X1" "X2" "X3"])
 savefig(dynamicLV,"dynamicLV.svg")
+
+
+#save data
+using Tables
+CSV.write("LV_E1.csv",  Tables.table(E1))
+CSV.write("LV_E2.csv",  Tables.table(E2))
+CSV.write("LV_T1.csv",  Tables.table(T1))
+CSV.write("LV_T2.csv",  Tables.table(T2))
+
+DynLV=[t[1:5:end] Yex[1:5:end,:]]
+CSV.write("DynLV.csv",  Tables.table(DynLV))
