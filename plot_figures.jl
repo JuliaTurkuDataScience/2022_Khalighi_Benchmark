@@ -1,6 +1,5 @@
 using Plots, CSV, DataFrames
 using StatsPlots
-theme(:ggplot2)
 
 nonstiff_benchmark = CSV.read("data/nonstiff_benchmark.csv", DataFrame, header=1)
 stiff_benchmark = CSV.read("data/stiff_benchmark.csv", DataFrame, header=1)
@@ -8,10 +7,11 @@ harmonic_benchmark = CSV.read("data/harmonic_benchmark.csv", DataFrame, header=1
 lotka_volterra_benchmark = CSV.read("data/lotka_volterra_benchmark.csv", DataFrame, header=1)
 sir_benchmark = CSV.read("data/sir_benchmark.csv", DataFrame, header=1)
 random_params_benchmark = CSV.read("data/random_params_benchmark.csv", DataFrame, header=1)
-DynLV = CSV.read("DynLV.csv", DataFrame, header=1)
+DynLV = CSV.read("data/DynLV.csv", DataFrame, header=1)
 
 ### plot Examples
 
+data_markers1 = [:circle, :square, :utriangle, :circle, :diamond, :square]
 p1 = Nothing
 
 for (plot_idx, method) in enumerate(unique(nonstiff_benchmark.Method))
@@ -22,17 +22,21 @@ for (plot_idx, method) in enumerate(unique(nonstiff_benchmark.Method))
             scale=:log,
             label=method,
             markersize=3,
-            shape=:circle,
+            shape=data_markers1[plot_idx],
             title="(a)",
             titleloc=:left,
             titlefont=font(10),
-            legend=false)
+            xlabel="Execution time (sc, Log)",
+            ylabel="Error: 2-norm (Log)",
+            legend=false,
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     else
         plot!(method_subset.ExecutionTime,
             method_subset.Error,
             label=method,
             markersize=3,
-            shape=:circle)
+            shape=data_markers1[plot_idx],
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     end
     display(p1)
 end
@@ -48,17 +52,24 @@ for (plot_idx, method) in enumerate(unique(stiff_benchmark.Method))
             scale=:log,
             label=method,
             markersize=3,
-            shape=:circle,
+            shape=data_markers1[plot_idx],
             title="(b)",
             titleloc=:left,
             titlefont=font(10),
-            legendposition=:outerright)
+            xlabel="Execution time (sc, Log)",
+            ylabel="Error: 2-norm (Log)",
+            legendposition=:outerbottom,
+            legendfontsize=6,
+            legendtitle="Solver Method",
+            legendtitlefontsize=7,
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     else
         plot!(method_subset.ExecutionTime,
             method_subset.Error,
             label=method,
             markersize=3,
-            shape=:circle)
+            shape=data_markers1[plot_idx],
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     end
     display(p2)
 end
@@ -73,30 +84,34 @@ for (plot_idx, method) in enumerate(unique(harmonic_benchmark.Method))
             scale=:log,
             label=method,
             markersize=3,
-            shape=:circle,
+            shape=data_markers1[plot_idx],
             title="(c)",
             titleloc=:left,
             titlefont=font(10),
-            legend=false)
+            xlabel="Execution time (sc, Log)",
+            ylabel="Error: 2-norm (Log)",
+            legend=false,
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     else
         plot!(method_subset.ExecutionTime,
             method_subset.Error,
             label=method,
             markersize=3,
-            shape=:circle)
+            shape=data_markers1[plot_idx],
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     end
     display(p3)
 end
 
 l1 = @layout [[grid(2, 1)] b{0.5w}]
 Plt1D = plot(p1, p3, p2,
-    layout=l1,
-    xlabel="Execution time (sc, Log)",
-    ylabel="Error: 2-norm (Log)")
+             layout=l1)
 savefig(Plt1D, "Plt1D.svg")
 savefig(Plt1D, "Plt1D.png")
 
-filter!(:Method => x -> !(x in ["J-1", "J-2", "J-3", "J-4"]), sir_benchmark)
+filter!(:Method => x -> x != "J-3", sir_benchmark)
+data_markers2 = [:circle, :square, :utriangle, :star, :dtriangle, :ltriangle, :rtriangle, :circle, :utriangle, :circle, :diamond, :square]
+data_colours2 = [:red, :red, :green, :green, :green, :green, :green, :green, :blue, :blue, :blue, :blue]
 p4 = Nothing
 
 for (plot_idx, method) in enumerate(unique(sir_benchmark.Method))
@@ -107,19 +122,25 @@ for (plot_idx, method) in enumerate(unique(sir_benchmark.Method))
             scale=:log,
             label=method,
             markersize=3,
-            shape=:circle,
+            shape=data_markers2[plot_idx],
             title="(a)",
             titleloc=:left,
             titlefont=font(10),
-            legendposition=:outerbottomright,
-            legendfontsize=6)
+            xlabel="Execution time (sc, Log)",
+            ylabel="Error: 2-norm (Log)",
+            legendposition=:outerright,
+            legendfontsize=6,
+            legendtitle="Solver Method",
+            legendtitlefontsize=7,
+            colour=data_colours2[plot_idx])
     else
         plot!(method_subset.ExecutionTime,
             method_subset.Error,
             label=method,
             markersize=3,
-            shape=:circle)
-    end
+            shape=data_markers2[plot_idx],
+            colour=data_colours2[plot_idx])
+        end
     display(p4)
 end
 
@@ -135,19 +156,21 @@ for (plot_idx, method) in enumerate(unique(lotka_volterra_benchmark.Method))
             scale=:log,
             label=method,
             markersize=3,
-            shape=:circle,
+            shape=data_markers1[plot_idx],
             title="(b)",
             titleloc=:left,
             titlefont=font(10),
             xlabel="Execution time (sc, Log)",
             ylabel="Error: 2-norm (Log)",
-            legend=false)
+            legend=false,
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     else
         plot!(method_subset.ExecutionTime,
             method_subset.Error,
             label=method,
             markersize=3,
-            shape=:circle)
+            shape=data_markers1[plot_idx],
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     end
     display(p5)
 end
@@ -175,15 +198,20 @@ for (plot_idx, method) in enumerate(unique(random_params_benchmark.Method))
             scale=:log,
             label=method,
             markersize=3,
+            shape=data_markers1[plot_idx],
             title="(a)",
+            titleloc=:left,
+            titlefont=font(10),
             xlabel="Execution time (sc, Log)",
             ylabel="Error: 2-norm (Log)",
-            legendposition=:bottomleft)
+            legendposition=:bottomleft,
+            colour = ifelse("Julia" in unique(method_subset.Language), :red, :blue))
     else
         scatter!(method_subset.ExecutionTime,
             method_subset.Error,
             label=method,
-            markersize=3)
+            markersize=3,
+            shape=:circle)
     end
     display(p7)
 end
