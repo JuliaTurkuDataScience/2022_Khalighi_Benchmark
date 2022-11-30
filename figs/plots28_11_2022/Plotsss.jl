@@ -264,22 +264,22 @@ Mt1=vcat(M_Ex1.Bench1_1,M_Ex2.Bench2_1,M_Ex3.Bench3_1,M_Ex4.Bench4_1)
 #     plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="mediumblue",
 #             ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
 Y=fitlinear(log.(J_tRnd1[:,1]),log.(J_ErrRnd1[:,1]))
-    plot(exp.(Y.x),exp.(Y.y),c="firebrick3",linewidth = 2,)
+    plot(exp.(Y.x),exp.(Y.y),c="firebrick3",linewidth = 2,label=:false)
 
     Y=fitlinear(log.(J_tRnd2[:,1]),log.(J_ErrRnd2[:,1]))
-    plot!(exp.(Y.x),exp.(Y.y),color = :hotpink,linewidth = 2)
+    plot!(exp.(Y.x),exp.(Y.y),color = :hotpink,linewidth = 2,label=:false)
 
     Y=fitlinear(log.(Mt2),log.(Merr2))
-    plot!(exp.(Y.x),exp.(Y.y),color = "royalblue3",linewidth = 2)
+    plot!(exp.(Y.x),exp.(Y.y),color = "royalblue3",linewidth = 2,label=:false)
 
     Y=fitlinear(log.(Mt4),log.(Merr4))
-    plot!(exp.(Y.x),exp.(Y.y), color = :skyblue2,linewidth = 2)
+    plot!(exp.(Y.x),exp.(Y.y), color = :skyblue2,linewidth = 2,label=:false)
 
     Y=fitlinear(log.(Mt3),log.(Merr3))
-    plot!(exp.(Y.x),exp.(Y.y), color = :cyan3,linewidth = 2)
+    plot!(exp.(Y.x),exp.(Y.y), color = :cyan3,linewidth = 2,label=:false)
 
     Y=fitlinear(log.(Mt1),log.(Merr1))
-    plot!(exp.(Y.x),exp.(Y.y), color = :mediumblue,linewidth = 2)
+    plot!(exp.(Y.x),exp.(Y.y), color = :mediumblue,linewidth = 2,label=:false)
 
 scatter!(Vector(J_tRnd1[:,1]), Vector(J_ErrRnd1[:,1]), markerstrokewidth=0,xscale = :log, yscale = :log,
          label = "J1",c="firebrick3", shape = :circle, xlabel="Execution time (Sec)", ylabel=L"\textrm{Error}= \Vert x - \overline{x} \;\Vert _2",
@@ -288,7 +288,7 @@ scatter!(Vector(J_tRnd1[:,1]), Vector(J_ErrRnd1[:,1]), markerstrokewidth=0,xscal
 
     scatter!(Mt2, Merr2, label = "M1",c="royalblue3", shape = :circle,markerstrokewidth=0)
     scatter!(Mt4, Merr4,  label = "M2",c="skyblue2", shape = :rect,markerstrokewidth=0,
-    titleloc = :left, titlefont = font(10))
+    titleloc = :left, titlefont = font(10), legendtitle="Method", legendtitlefont = font(9))
     scatter!(Mt3, Merr3, label = "M3",c="cyan3", shape = :diamond,markerstrokewidth=0)
     p10=scatter!(Mt1, Merr1,  label = "M4",c="mediumblue",shape = :rtriangle,markerstrokewidth=0, ms=6,
     title = "(a)", titleloc = :left, titlefont = font(10))
