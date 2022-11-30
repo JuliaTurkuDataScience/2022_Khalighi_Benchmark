@@ -207,79 +207,79 @@ Mt1=vcat(M_Ex1.Bench1_1,M_Ex2.Bench2_1,M_Ex3.Bench3_1,M_Ex4.Bench4_1)
     Merr4=vcat(M_Ex1.Bench1_8,M_Ex2.Bench2_8,M_Ex3.Bench3_8,M_Ex4.Bench4_8)
 
     #plot linear lines
-td=log.(J_tRnd1[:,1])
-    ed=log.(J_ErrRnd1[:,1])
-    data = DataFrame(x=td, y=ed);
-
-    model = lm(@formula(y ~ x), data)
-    pred = DataFrame(x = minimum(td):maximum(td))
-    pr = predict(model, pred, interval = :confidence, level = 0.7)
-
-    plot(;xscale = :log, yscale = :log)
-    plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="firebrick3",
-            ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
-            td=log.(J_tRnd2[:,1])
-    ed=log.(J_ErrRnd2[:,1])
-    data = DataFrame(x=td, y=ed);
-
-    model = lm(@formula(y ~ x), data)
-    pred = DataFrame(x = minimum(td):maximum(td))
-    pr = predict(model, pred, interval = :confidence, level = 0.7)
-    plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="hotpink",
-            ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
-            td=log.(Mt2)
-    ed=log.(Merr2)
-    data = DataFrame(x=td, y=ed);
-
-    model = lm(@formula(y ~ x), data)
-    pred = DataFrame(x = minimum(td):maximum(td))
-    pr = predict(model, pred, interval = :confidence, level = 0.7)
-    plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="royalblue3",
-            ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
-            td=log.(Mt4)
-    ed=log.(Merr4)
-    data = DataFrame(x=td, y=ed);
-
-    model = lm(@formula(y ~ x), data)
-    pred = DataFrame(x = minimum(td):maximum(td))
-    pr = predict(model, pred, interval = :confidence, level = 0.7)
-    plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="skyblue2",
-            ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
-            td=log.(Mt3)
-    ed=log.(Merr3)
-    data = DataFrame(x=td, y=ed);
-
-    model = lm(@formula(y ~ x), data)
-    pred = DataFrame(x = minimum(td):maximum(td))
-    pr = predict(model, pred, interval = :confidence, level = 0.7)
-    plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="cyan3",
-            ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
-            td=log.(Mt1)
-    ed=log.(Merr1)
-    data = DataFrame(x=td, y=ed);
-
-    model = lm(@formula(y ~ x), data)
-    pred = DataFrame(x = minimum(td):maximum(td))
-    pr = predict(model, pred, interval = :confidence, level = 0.7)
-    plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="mediumblue",
-            ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
-# Y=fitlinear(log.(J_tRnd1[:,1]),log.(J_ErrRnd1[:,1]))
-#     plot(exp.(Y.x),exp.(Y.y),c="firebrick3",linewidth = 2,)
+# td=log.(J_tRnd1[:,1])
+#     ed=log.(J_ErrRnd1[:,1])
+#     data = DataFrame(x=td, y=ed);
 #
-#     Y=fitlinear(log.(J_tRnd2[:,1]),log.(J_ErrRnd2[:,1]))
-#     plot!(exp.(Y.x),exp.(Y.y),color = :hotpink,linewidth = 2)
+#     model = lm(@formula(y ~ x), data)
+#     pred = DataFrame(x = minimum(td):maximum(td))
+#     pr = predict(model, pred, interval = :confidence, level = 0.0)
 #
-#     Y=fitlinear(log.(Mt2),log.(Merr2))
-#     plot!(exp.(Y.x),exp.(Y.y),color = "royalblue3",linewidth = 2)
+#     plot(;xscale = :log, yscale = :log)
+#     plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="firebrick3",
+#             ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
+#             td=log.(J_tRnd2[:,1])
+#     ed=log.(J_ErrRnd2[:,1])
+#     data = DataFrame(x=td, y=ed);
 #
-#     Y=fitlinear(log.(Mt4),log.(Merr4))
-#     plot!(exp.(Y.x),exp.(Y.y), color = :skyblue2,linewidth = 2)
+#     model = lm(@formula(y ~ x), data)
+#     pred = DataFrame(x = minimum(td):maximum(td))
+#     pr = predict(model, pred, interval = :confidence, level = 0.0)
+#     plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="hotpink",
+#             ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
+#             td=log.(Mt2)
+#     ed=log.(Merr2)
+#     data = DataFrame(x=td, y=ed);
 #
-#     Y=fitlinear(log.(Mt3),log.(Merr3))
-#     plot!(exp.(Y.x),exp.(Y.y), color = :cyan3,linewidth = 2)
+#     model = lm(@formula(y ~ x), data)
+#     pred = DataFrame(x = minimum(td):maximum(td))
+#     pr = predict(model, pred, interval = :confidence, level = 0.0)
+#     plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="royalblue3",
+#             ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
+#             td=log.(Mt4)
+#     ed=log.(Merr4)
+#     data = DataFrame(x=td, y=ed);
 #
-#     Y=fitlinear(log.(Mt1),log.(Merr1))
-#     plot!(exp.(Y.x),exp.(Y.y), color = :mediumblue,linewidth = 2)
+#     model = lm(@formula(y ~ x), data)
+#     pred = DataFrame(x = minimum(td):maximum(td))
+#     pr = predict(model, pred, interval = :confidence, level = 0.0)
+#     plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="skyblue2",
+#             ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
+#             td=log.(Mt3)
+#     ed=log.(Merr3)
+#     data = DataFrame(x=td, y=ed);
+#
+#     model = lm(@formula(y ~ x), data)
+#     pred = DataFrame(x = minimum(td):maximum(td))
+#     pr = predict(model, pred, interval = :confidence, level = 0.0)
+#     plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="cyan3",
+#             ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
+#             td=log.(Mt1)
+#     ed=log.(Merr1)
+#     data = DataFrame(x=td, y=ed);
+#
+#     model = lm(@formula(y ~ x), data)
+#     pred = DataFrame(x = minimum(td):maximum(td))
+#     pr = predict(model, pred, interval = :confidence, level = 0.0)
+#     plot!(exp.(pred.x), exp.(pr.prediction),  linewidth=3, c="mediumblue",
+#             ribbon = (exp.(pr.prediction) .- exp.(pr.lower), exp.(pr.upper) .- exp.(pr.prediction)))
+Y=fitlinear(log.(J_tRnd1[:,1]),log.(J_ErrRnd1[:,1]))
+    plot(exp.(Y.x),exp.(Y.y),c="firebrick3",linewidth = 2,)
+
+    Y=fitlinear(log.(J_tRnd2[:,1]),log.(J_ErrRnd2[:,1]))
+    plot!(exp.(Y.x),exp.(Y.y),color = :hotpink,linewidth = 2)
+
+    Y=fitlinear(log.(Mt2),log.(Merr2))
+    plot!(exp.(Y.x),exp.(Y.y),color = "royalblue3",linewidth = 2)
+
+    Y=fitlinear(log.(Mt4),log.(Merr4))
+    plot!(exp.(Y.x),exp.(Y.y), color = :skyblue2,linewidth = 2)
+
+    Y=fitlinear(log.(Mt3),log.(Merr3))
+    plot!(exp.(Y.x),exp.(Y.y), color = :cyan3,linewidth = 2)
+
+    Y=fitlinear(log.(Mt1),log.(Merr1))
+    plot!(exp.(Y.x),exp.(Y.y), color = :mediumblue,linewidth = 2)
 
 scatter!(Vector(J_tRnd1[:,1]), Vector(J_ErrRnd1[:,1]), markerstrokewidth=0,xscale = :log, yscale = :log,
          label = "J1",c="firebrick3", shape = :circle, xlabel="Execution time (Sec)", ylabel=L"\textrm{Error}= \Vert x - \overline{x} \;\Vert _2",
