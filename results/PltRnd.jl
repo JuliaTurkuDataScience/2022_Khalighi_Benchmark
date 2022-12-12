@@ -3,10 +3,24 @@ p7 = scatter(random_params_benchmark.ExecutionTime,
     group=random_params_benchmark.Label,
     shape=random_params_benchmark.Shape,
     markersize=3, markerstrokewidth=0,
-    colour = random_params_benchmark.Colour,
+    colour=random_params_benchmark.Colour,
     title="(a)", titleloc=:left, titlefont=font(10),
     xlabel=time_label, ylabel=error_label,
     legendposition=:bottomleft, legendtitle="Method")
+
+fits = Dict()
+
+for method in sort(unique(random_params_benchmark.Method))
+
+    method_subset = filter(:Method => x -> x == method, random_params_benchmark)
+    fits[method] = fitlinear(log.(method_subset.ExecutionTime), log.(method_subset.Error))
+    p7 = plot!(exp.(fits[method].x), exp.(fits[method].y),
+        colour=aesthetics[method][3],
+        linewidth=2, label=false)
+    
+    display(p7)
+
+end
 
 p8 = @df random_params_benchmark boxplot(:Label, :Error,
     yscale=:log, ylabel=error_label,

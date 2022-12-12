@@ -24,7 +24,7 @@ filter!(:Method => x -> x != "J-3", sir_benchmark)
 random_params_benchmark = CSV.read(joinpath(data_dir, "random_params_benchmark.csv"), DataFrame, header=1)
 DynLV = CSV.read(joinpath(data_dir, "DynLV.csv"), DataFrame, header=1)
 
-easthetics = Dict("J-PC" => ("J1", :circle, "firebrick3"),
+aesthetics = Dict("J-PC" => ("J1", :circle, "firebrick3"),
                   "J-NR" => ("J2", :square, "hotpink"),
                   "M-PI-PC" => ("M1", :circle, "royalblue3"),
                   "M-PI-IM2" => ("M2", :square, "skyblue2"),
