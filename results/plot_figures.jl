@@ -55,9 +55,9 @@ for df in [nonstiff_benchmark, stiff_benchmark, harmonic_benchmark, lotka_volter
     df[!, :Label] .= ""
     df[!, :Shape] .= ""
     df[!, :Colour] .= ""
-    df.Label .= map(x -> get(easthetics, x, 0)[1], df.Method)
-    df.Shape .= map(x -> get(easthetics, x, 0)[2], df.Method)
-    df.Colour .= map(x -> get(easthetics, x, 0)[3], df.Method)
+    df.Label .= map(x -> get(aesthetics, x, 0)[1], df.Method)
+    df.Shape .= map(x -> get(aesthetics, x, 0)[2], df.Method)
+    df.Colour .= map(x -> get(aesthetics, x, 0)[3], df.Method)
 
 end
 

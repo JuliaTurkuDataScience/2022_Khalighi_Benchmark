@@ -1,4 +1,3 @@
-
 # Scatter plot of errors versus time of execution for several solutions of
 # 1D and MD examples with random parameters and conditions
 p7 = scatter(random_params_benchmark.ExecutionTime,
