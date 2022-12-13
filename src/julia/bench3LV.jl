@@ -1,13 +1,5 @@
-using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
-
-## insert data
-#it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./data_matlab")
-# cd("../data_matlab/")
-Mdata = Matrix(CSV.read("BenchLV.csv", DataFrame, header = 0)) #Benchmark from Matlab
-M_ExactLV3 = Matrix(CSV.read("M_Exact_LV3.csv", DataFrame, header = 0)) #Exact from Matlab
-## inputs
-tSpan = [0, 60]       # [intial time, final time]
+joinpath(data_dir, #data_Julia/# inputs
+t)Span = [0, 60]       # [intial time, final time]
 y0 = [1,1,1]   # initial values [X1(0),X2(0),X3(0)]
 α = [1, .9, .7]          # order of derivatives
 
@@ -117,25 +109,24 @@ pLV3=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 3, markersize = 5,label = "M-PI
             ,legend=:false)
 
 
-savefig(pLV3,"LV3.svg")
+# savefig(pLV3,"LV3.svg")
 # plot Scifracx outputs
 plotd2=plot!(T3, E3,linewidth = 3,  markersize = 5, label = "J-PECE (FractionalDiffEq.jl)", shape = :diamond)
-savefig(plotd2,"LV3_1.svg")
+# savefig(plotd2,"LV3_1.svg")
 
 
 # plot the dynamics
 dynamicLV=plot(t[1:100:end],Yex[1:100:end,:], linewidth = 3,
                 xlabel="Time", ylabel="Abundance of species" ,
                 thickness_scaling = 1 , framestyle=:box, labels=["X1" "X2" "X3"])
-savefig(dynamicLV,"dynamicLV.svg")
+# savefig(dynamicLV,"dynamicLV.svg")
 
 
 #save data
-using Tables
-CSV.write("LV_E1.csv",  Tables.table(E1))
-CSV.write("LV_E2.csv",  Tables.table(E2))
-CSV.write("LV_T1.csv",  Tables.table(T1))
-CSV.write("LV_T2.csv",  Tables.table(T2))
+CSV.write(joinpath(data_dir, "data_Julia/LV_E1.csv"),  Tables.table(E1))
+CSV.write(joinpath(data_dir, "data_Julia/LV_E2.csv"),  Tables.table(E2))
+CSV.write(joinpath(data_dir, "data_Julia/LV_T1.csv"),  Tables.table(T1))
+CSV.write(joinpath(data_dir, "data_Julia/LV_T2.csv"),  Tables.table(T2))
 
 DynLV=[t[1:5:end] Yex[1:5:end,:]]
-CSV.write("DynLV.csv",  Tables.table(DynLV))
+CSV.write(joinpath(data_dir, "data_Julia/DynLV.csv"),  Tables.table(DynLV))

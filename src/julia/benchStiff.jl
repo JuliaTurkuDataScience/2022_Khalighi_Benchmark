@@ -1,11 +1,3 @@
-using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
-
-## insert data
-#it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./data_matlab")
-# cd("./data_matlab/")
-Mdata = Matrix(CSV.read("BenchStiff.csv", DataFrame, header = 0)) #Benchmark from Matlab
-
 ## inputs
 tSpan = [0, 5]     # [intial time, final time]
 y0 = 1             # intial value
@@ -57,7 +49,7 @@ plot!(Mdata[:, 3], Mdata[:, 7], linewidth = 2, markersize = 5,label = "M-PI-IM1"
 pStiff1=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 2, markersize = 5,label = "M-PI-IM2", shape = :rect, color = :red, mc=:white)
 
 
-savefig(pStiff1,"Stiff1.svg")
+# savefig(pStiff1,"Stiff1.svg")
 
 
 plot(T2, E2, linewidth = 2, markersize = 5,
@@ -66,7 +58,7 @@ plot(T2, E2, linewidth = 2, markersize = 5,
 pStiff2=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 2, markersize = 5,label = "M-PI-IM2", shape = :rect, color = :red, mc=:white)
 
 
-savefig(pStiff2,"Stiff2.svg")
+# savefig(pStiff2,"Stiff2.svg")
 
 plot(T1[2:end], E1[2:end], xscale = :log, yscale = :log, linewidth = 3,
      label = "J-PC", shape = :circle, xlabel="Execution time (sc, Log)", ylabel="Error: 2-norm (Log)",
@@ -77,12 +69,11 @@ plot!(Mdata[1:end, 3], Mdata[1:end, 7], linewidth = 3, label = "M-PI-IM1", shape
 plot!(Mdata[2:end, 2], Mdata[2:end, 6], linewidth =3, label = "M-PI-PC", shape = :circle)
 pStiff3=plot!(Mdata[1:end, 4], Mdata[1:end, 8], linewidth = 3, markersize = 5,label = "M-PI-IM2",shape = :rect, legend=:false)
 
-savefig(pStiff3,"Stiff3.svg")
+# savefig(pStiff3,"Stiff3.svg")
 
 
 #save data
-using Tables
-CSV.write("Stiff_E1.csv",  Tables.table(E1))
-CSV.write("Stiff_E2.csv",  Tables.table(E2))
-CSV.write("Stiff_T1.csv",  Tables.table(T1))
-CSV.write("Stiff_T2.csv",  Tables.table(T2))
+CSV.write(joinpath(data_dir, "data_Julia/Stiff_E1.csv"),  Tables.table(E1))
+CSV.write(joinpath(data_dir, "data_Julia/Stiff_E2.csv"),  Tables.table(E2))
+CSV.write(joinpath(data_dir, "data_Julia/Stiff_T1.csv"),  Tables.table(T1))
+CSV.write(joinpath(data_dir, "data_Julia/Stiff_T2.csv"),  Tables.table(T2))

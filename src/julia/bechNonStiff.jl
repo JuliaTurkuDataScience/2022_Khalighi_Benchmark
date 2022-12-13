@@ -1,10 +1,3 @@
-using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
-
-## insert data
-#it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./data_matlab")
-# cd("../data_matlab/")
-Mdata = CSV.read("BenchNonStiff.csv", DataFrame, header = 0) #it should be based on the directory of CSV files on your computer
 ## inputs
 tSpan = [0, 1]     # [intial time, final time]
 y0 = 0             # intial value
@@ -57,11 +50,10 @@ pNonStiff=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 3, markersize = 5,label = 
             ,legend=:false)
 
 
-savefig(pNonStiff,"NonStiff.svg")
+# savefig(pNonStiff,"NonStiff.svg")
 
 #save data
-using Tables
-CSV.write("NonStiff_E1.csv",  Tables.table(E1))
-CSV.write("NonStiff_E2.csv",  Tables.table(E2))
-CSV.write("NonStiff_T1.csv",  Tables.table(T1))
-CSV.write("NonStiff_T2.csv",  Tables.table(T2))
+CSV.write(joinpath(data_dir, "data_Julia/NonStiff_E1.csv"),  Tables.table(E1))
+CSV.write(joinpath(data_dir, "data_Julia/NonStiff_E2.csv"),  Tables.table(E2))
+CSV.write(joinpath(data_dir, "data_Julia/NonStiff_T1.csv"),  Tables.table(T1))
+CSV.write(joinpath(data_dir, "data_Julia/NonStiff_T2.csv"),  Tables.table(T2))

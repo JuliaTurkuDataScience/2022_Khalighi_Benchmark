@@ -1,13 +1,3 @@
-using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
-
-## insert data
-#it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, " /data_matlab")
-# cd("../data_matlab/")
-M_Ex1 = CSV.read("RndEx1.csv", DataFrame, header = 1)
-M_Ex2 = CSV.read("RndEx2.csv", DataFrame, header = 1)
-M_Ex3 = CSV.read("RndEx3.csv", DataFrame, header = 1)
-M_Ex4 = CSV.read("RndEx4.csv", DataFrame, header = 1)
 ## inputs Ex1
 
 # Equation
@@ -271,13 +261,12 @@ scatter!(Mt4, Merr4, linewidth = 3, markersize = 5,label = "M-PI-IM2", shape = :
 
 
 #save data
-using Tables
-CSV.write("ErrRnd1.csv",  Tables.table(E1))
-CSV.write("ErrRnd2.csv",  Tables.table(E2))
-CSV.write("ErrRnd3.csv",  Tables.table(E3))
-CSV.write("tRnd1.csv",  Tables.table(T1))
-CSV.write("tRnd2.csv",  Tables.table(T2))
-CSV.write("tRnd3.csv",  Tables.table(T3))
+CSV.write(joinpath(data_dir, "data_Julia/ErrRnd1.csv"),  Tables.table(E1))
+CSV.write(joinpath(data_dir, "data_Julia/ErrRnd2.csv"),  Tables.table(E2))
+CSV.write(joinpath(data_dir, "data_Julia/ErrRnd3.csv"),  Tables.table(E3))
+CSV.write(joinpath(data_dir, "data_Julia/tRnd1.csv"),  Tables.table(T1))
+CSV.write(joinpath(data_dir, "data_Julia/tRnd2.csv"),  Tables.table(T2))
+CSV.write(joinpath(data_dir, "data_Julia/tRnd3.csv"),  Tables.table(T3))
 #
 # J_E1 = CSV.read("ErrRnd1.csv", DataFrame, header = 1)
 # J_E2 = CSV.read("ErrRnd2.csv", DataFrame, header = 1)

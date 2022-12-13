@@ -1,11 +1,3 @@
-using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
-
-## insert data
-#it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./data_matlab")
-# cd("../data_matlab/")
-Mdata = Matrix(CSV.read("BenchHarmonic.csv", DataFrame, header = 0)) #Benchmark from Matlab
-
 ## inputs
 tSpan = [0, 10]     # [intial time, final time]
 y0 = [1 1]             # intial value ([of order 0      of order 1])
@@ -69,11 +61,10 @@ plot!(Mdata[:, 2], Mdata[:, 6], linewidth = 3, markersize = 5,label = "M-PI-PC",
 pHar=plot!(Mdata[:, 4], Mdata[:, 8], linewidth = 3, markersize = 5,label = "M-PI-IM2", shape = :rect, legend=:false)
 
 
-savefig(pHar,"Harmonic.svg")
+# savefig(pHar,"Harmonic.svg")
 
 #save data
-using Tables
-CSV.write("Harmonic_E1.csv",  Tables.table(E1))
-CSV.write("Harmonic_E2.csv",  Tables.table(E2))
-CSV.write("Harmonic_T1.csv",  Tables.table(T1))
-CSV.write("Harmonic_T2.csv",  Tables.table(T2))
+CSV.write(joinpath(data_dir, "data_Julia/Harmonic_E1.csv"),  Tables.table(E1))
+CSV.write(joinpath(data_dir, "data_Julia/Harmonic_E2.csv"),  Tables.table(E2))
+CSV.write(joinpath(data_dir, "data_Julia/Harmonic_T1.csv"),  Tables.table(T1))
+CSV.write(joinpath(data_dir, "data_Julia/Harmonic_T2.csv"),  Tables.table(T2))

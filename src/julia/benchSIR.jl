@@ -1,11 +1,3 @@
-using BenchmarkTools, FdeSolver, FractionalDiffEq, Plots, LinearAlgebra, SpecialFunctions, CSV, DataFrames
-
-## insert data
-#it should be based on the directory of CSV files on your computer
-push!(LOAD_PATH, "./data_matlab")
-# cd("../data_matlab/")
-Mdata = Matrix(CSV.read("BenchSIR.csv", DataFrame, header = 0)) #Benchmark from Matlab
-M_ExactSIR = Matrix(CSV.read("M_ExactSIR.csv", DataFrame, header = 0)) #Exact from Matlab
 ## inputs
 I0 = 0.1             # intial value of infected
 tSpan = [0, 100]       # [intial time, final time]
@@ -170,25 +162,23 @@ plot!(T7, E7,linewidth = 3,markersize = 5,  label = "J-FLMMNewtonG", shape = :dt
 # savefig(pSIR1,"pSIR1.svg")
 pSIR2=plot!(T8, E8,linewidth = 3, markersize = 5, label = "J-FLMMTrap", shape = :pentagon, legend=false)
 
-savefig(pSIR2,"pSIR2.svg")
+# savefig(pSIR2,"pSIR2.svg")
 
 #save data
-using Tables
-CSV.write("SIR_E1.csv",  Tables.table(E1))
-CSV.write("SIR_E2.csv",  Tables.table(E2))
-# CSV.write("SIR_E3.csv",  Tables.table(E3))
-CSV.write("SIR_E4.csv",  Tables.table(E4))
-CSV.write("SIR_E5.csv",  Tables.table(E5))
-CSV.write("SIR_E6.csv",  Tables.table(E6))
-CSV.write("SIR_E7.csv",  Tables.table(E7))
-CSV.write("SIR_E8.csv",  Tables.table(E8))
-CSV.write("SIR_E9.csv",  Tables.table(E9))
-CSV.write("SIR_T1.csv",  Tables.table(T1))
-CSV.write("SIR_T2.csv",  Tables.table(T2))
-CSV.write("SIR_T3.csv",  Tables.table(T3))
-CSV.write("SIR_T4.csv",  Tables.table(T4))
-CSV.write("SIR_T5.csv",  Tables.table(T5))
-CSV.write("SIR_T6.csv",  Tables.table(T6))
-CSV.write("SIR_T7.csv",  Tables.table(T7))
-CSV.write("SIR_T8.csv",  Tables.table(T8))
-CSV.write("SIR_T9.csv",  Tables.table(T9))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_E1.csv"),  Tables.table(E1))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_E2.csv"),  Tables.table(E2))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_E4.csv"),  Tables.table(E4))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_E5.csv"),  Tables.table(E5))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_E6.csv"),  Tables.table(E6))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_E7.csv"),  Tables.table(E7))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_E8.csv"),  Tables.table(E8))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_E9.csv"),  Tables.table(E9))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T1.csv"),  Tables.table(T1))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T2.csv"),  Tables.table(T2))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T3.csv"),  Tables.table(T3))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T4.csv"),  Tables.table(T4))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T5.csv"),  Tables.table(T5))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T6.csv"),  Tables.table(T6))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T7.csv"),  Tables.table(T7))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T8.csv"),  Tables.table(T8))
+CSV.write(joinpath(data_dir, "data_Julia/SIR_T9.csv"),  Tables.table(T9))
