@@ -3,10 +3,11 @@ using StatsPlots             # for making boxplots
 using EasyFit, GLM           # for plotting linear line in the background
 using LaTeXStrings           # for math in plots
 
+source_dir = joinpath(@__DIR__, "src/benchmarking/plotters")
 # directory where data is read from (the "data" directory)
-data_dir = joinpath(dirname(@__DIR__), "data")
+data_dir = joinpath(@__DIR__, "data")
 # directory where figures are saved into (the "figures" directory)
-output_dir = joinpath(@__DIR__, "figures")
+output_dir = joinpath(@__DIR__, "results/benchmarking")
 
 # load the benchmarking results into several dataframes
 
@@ -66,12 +67,12 @@ error_label = L"\textrm{Error}= \Vert x - \overline{x} \;\Vert ^2"
 time_label = "Execution Time (Sec)"
 
 # make plots from 1D benchmark by running Plt1D.jl script
-include(joinpath(@__DIR__, "Plt1D.jl"))
+include(joinpath(source_dir, "Plt1D.jl"))
 
 # make plots from MD benchmark by running PltMD.jl script
-include(joinpath(@__DIR__, "PltMD.jl"))
+include(joinpath(source_dir, "PltMD.jl"))
 
 # plot benchmark with random params by running PltRnd.jl script
-include(joinpath(@__DIR__, "PltRnd.jl"))
+include(joinpath(source_dir, "PltRnd.jl"))
 
 # all figures are saved in the "figures" directory
