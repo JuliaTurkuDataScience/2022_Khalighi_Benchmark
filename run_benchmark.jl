@@ -12,7 +12,7 @@ Mdata = CSV.read(joinpath(data_dir, "data_matlab/BenchNonStiff.csv"), DataFrame,
 include(joinpath(source_dir, "benchNonStiff.jl"))
 
 # run stiff_benchmark
-Mdata = Matrix(CSV.read(joinpath(data_dir, "data_matlab/BenchStiff.csv", DataFrame, header=0)))
+Mdata = Matrix(CSV.read(joinpath(data_dir, "data_matlab/BenchStiff.csv"), DataFrame, header=0))
 include(joinpath(source_dir, "benchStiff.jl"))
 
 # run harmonic_benchmark
@@ -20,13 +20,17 @@ Mdata = Matrix(CSV.read(joinpath(data_dir, "data_matlab/BenchHarmonic.csv"), Dat
 include(joinpath(source_dir, "benchHarmonic.jl"))
 
 # run sir_benchmark
-Mdata = Matrix(CSV.read(joinpath(data_dir, "data_matlab/BenchSIR.csv"), DataFrame, header = 0)) # Benchmark from Matlab
-M_ExactSIR = Matrix(CSV.read(joinpath(data_dir, "data_matlab/M_ExactSIR.csv"), DataFrame, header = 0)) # Exact from Matlab
+# Benchmark from Matlab
+Mdata = Matrix(CSV.read(joinpath(data_dir, "data_matlab/BenchSIR.csv"), DataFrame, header = 0))
+# Exact from Matlab
+M_ExactSIR = Matrix(CSV.read(joinpath(data_dir, "data_matlab/M_ExactSIR.csv"), DataFrame, header = 0))
 include(joinpath(source_dir, "benchSIR.jl"))
 
 # run lotka_volterra_benchmark
-Mdata = Matrix(CSV.read(joinpath(data_dir, "data_matlab/BenchLV.csv"), DataFrame, header = 0)) #Benchmark from Matlab
-M_ExactLV3 = Matrix(CSV.read(joinpath(data_dir, "data_matlab/M_Exact_LV3.csv"), DataFrame, header = 0)) #Exact from Matlab
+# Benchmark from Matlab
+Mdata = Matrix(CSV.read(joinpath(data_dir, "data_matlab/BenchLV.csv"), DataFrame, header = 0))
+# Exact from Matlab
+M_ExactLV3 = Matrix(CSV.read(joinpath(data_dir, "data_matlab/M_Exact_LV3.csv"), DataFrame, header = 0))
 include(joinpath(source_dir, "bench3LV.jl"))
 
 # run random_params_benchmark
