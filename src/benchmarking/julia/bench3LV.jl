@@ -1,5 +1,5 @@
-joinpath(data_dir, #data_Julia/# inputs
-t)Span = [0, 60]       # [intial time, final time]
+## inputs
+tSpan = [0, 60]       # [intial time, final time]
 y0 = [1,1,1]   # initial values [X1(0),X2(0),X3(0)]
 α = [1, .9, .7]          # order of derivatives
 
