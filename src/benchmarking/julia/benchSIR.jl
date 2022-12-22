@@ -182,3 +182,14 @@ CSV.write(joinpath(data_dir, "data_Julia/SIR_T6.csv"),  Tables.table(T6))
 CSV.write(joinpath(data_dir, "data_Julia/SIR_T7.csv"),  Tables.table(T7))
 CSV.write(joinpath(data_dir, "data_Julia/SIR_T8.csv"),  Tables.table(T8))
 CSV.write(joinpath(data_dir, "data_Julia/SIR_T9.csv"),  Tables.table(T9))
+
+
+# plot the dynamics
+dynamicSIR=plot(t[1:100:end],Yex[1:100:end,:],
+                xlabel="Time", ylabel="Fraction of population" ,
+                thickness_scaling = 1 , labels=["S" "I" "R"])
+
+DynSIR=[t[1:100:end] Yex[1:100:end,:]]
+#
+# using DelimitedFiles
+# writedlm("DynSIR.csv",  DynSIR, ',')

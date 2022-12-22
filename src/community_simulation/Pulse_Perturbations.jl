@@ -1,3 +1,5 @@
+#replication of Fig. 2 of https://doi.org/10.1371/journal.pcbi.1009396
+
 ## inputs
 tSpan = [0, 300]   # time span
 h = 0.05           # time step

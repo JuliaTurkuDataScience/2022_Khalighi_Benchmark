@@ -1,3 +1,5 @@
+#replication of Fig. 3 of https://doi.org/10.1371/journal.pcbi.1009396
+
 ## inputs
 tSpan = [0, 450]   # time span
 h = 0.01           # time step
@@ -83,7 +85,7 @@ p111 = vspan(p11, [200, 330], color=:black, alpha=0.3, labels=:false)
 
 #background
 mm = 20;
-T2 = 4501;
+T2 = 450;
 m = Int16(ceil(mod(T2 / (mm * 4), mm)))
 v = zeros(m, 2)
 v1 = zeros(m, 2)

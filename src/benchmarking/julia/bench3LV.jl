@@ -128,5 +128,8 @@ CSV.write(joinpath(data_dir, "data_Julia/LV_E2.csv"),  Tables.table(E2))
 CSV.write(joinpath(data_dir, "data_Julia/LV_T1.csv"),  Tables.table(T1))
 CSV.write(joinpath(data_dir, "data_Julia/LV_T2.csv"),  Tables.table(T2))
 
-DynLV=[t[1:5:end] Yex[1:5:end,:]]
+DynLV=[t[1:50:end] Yex[1:50:end,:]]
 CSV.write(joinpath(data_dir, "data_Julia/DynLV.csv"),  Tables.table(DynLV))
+
+# using DelimitedFiles
+# writedlm("DynLV.csv",  DynLV, ',')

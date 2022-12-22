@@ -17,8 +17,8 @@ repo = HTTP.get("https://raw.githubusercontent.com/CSSEGISandData/COVID-19/maste
 dataset_CC = CSV.read(repo.body, DataFrame) # all data of confirmed
 
 # run models
-include(joinpath(source_dir, "SEIPAHRFPortugal.jl")) # Portugal
-include(joinpath(source_dir, "SEIPAHRFSpain.jl"))    # Spain
+include(joinpath(source_dir, "Portugal_model_SEIPAHRF.jl")) # Portugal
+include(joinpath(source_dir, "Spain_model_SEIPAHRF.jl"))    # Spain
 
 # make plot
 P = plot(plSpain, plPortugal,

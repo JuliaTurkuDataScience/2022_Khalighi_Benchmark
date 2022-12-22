@@ -6,12 +6,11 @@ p4 = plot(sir_benchmark.ExecutionTime,
     sir_benchmark.Error, scale=:log,
     group=sir_benchmark.Label,
     shape=sir_benchmark.Shape, markersize=3,
-    colour=sir_benchmark.Colour,
-    title="(a)", titleloc=:left, titlefont=font(10),
+    colour=sir_benchmark.Colour,markerstrokewidth=0.3,ms=3.5,
+    title="(a) Non-oscillation example", titleloc=:left,
     xlabel=time_label, ylabel=error_label,
-    legend=false, thickness_scaling=1,
-    legendposition=:outerright, legendfontsize=6,
-    legendtitle="Method", legendtitlefontsize=7)
+    legendposition=:outerbottomright, legendfontsize=9,
+    legendtitle="Method", legendtitlefontsize=10)
 
 # Sharp oscillation example
 p5 = plot(lotka_volterra_benchmark.ExecutionTime,
@@ -19,23 +18,39 @@ p5 = plot(lotka_volterra_benchmark.ExecutionTime,
     group=lotka_volterra_benchmark.Label,
     shape=lotka_volterra_benchmark.Shape, markersize=3,
     colour=lotka_volterra_benchmark.Colour,
-    title="(b)", titleloc=:left, titlefont=font(10),
-    xlabel=time_label, ylabel=error_label,
-    legend=false, thickness_scaling=1)
-
-# Illustration of the sharp oscillation dynamics
-p6 = plot(DynLV[:, 1], Matrix(DynLV[:, 2:4]), xlabel="Time", ylabel="Abundance of species",
-    thickness_scaling=1, framestyle=:box, labels=["X1" "X2" "X3"],
-    title="(c)", titleloc=:left, titlefont=font(10))
+    title="(b) Sharp oscillation example", titleloc=:left,
+    xlabel=time_label, ylabel=error_label,markerstrokewidth=0.3,ms=3.5,
+    legend=false)
 
 # define plot layout
-l2 = @layout [b{0.6h}; grid(1, 2)]
+l2 = @layout [a{0.5h}; b{0.8w} _]
 
 # make multipanel plot
-PltMD = plot(p4, p5, p6,
+PltMD = plot(p4, p5,
     layout=l2,
-    size=(800, 600))
+    size=(800, 800))
 
 # save plot as svg and png files in the "figures" directory
 savefig(PltMD, joinpath(output_dir, "PltMD.svg"))
 savefig(PltMD, joinpath(output_dir, "PltMD.png"))
+
+
+# Illustration of the sharp oscillation dynamics
+p6 = plot(DynSIR[:, 1], Matrix(DynSIR[:, 2:4]), xlabel="Time", ylabel="Fraction of population",
+              labels=["S" "I" "R"],
+                title="(a) Dynamics of non-oscillation example", titleloc=:left, titlefont=font(10))
+# Illustration of the non-oscillation dynamics
+p7 = plot(DynLV[:, 1], Matrix(DynLV[:, 2:4]), xlabel="Time", ylabel="Abundance of species",
+         labels=["X1" "X2" "X3"],
+        title="(b) Dynamics of sharp oscillation example", titleloc=:left, titlefont=font(10))
+
+# define plot layout
+l = @layout [grid(1, 2)]
+
+# make multipanel plot
+PltDynMD = plot(p6, p7,
+            layout=l,
+            size=(750, 450))
+
+savefig(PltDynMD, joinpath(output_dir, "PltDynMD.svg"))
+savefig(PltDynMD, joinpath(output_dir, "PltDynMD.png"))

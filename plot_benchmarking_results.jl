@@ -32,6 +32,7 @@ lotka_volterra_benchmark.Error = parse.(Float64, lotka_volterra_benchmark.Error)
 
 # data for plot 6
 DynLV = CSV.read(joinpath(data_dir, "DynLV.csv"), DataFrame, header=1)
+DynSIR = CSV.read(joinpath(data_dir, "DynSIR.csv"), DataFrame)
 
 # data for plot 7, 8 and 9
 random_params_benchmark = CSV.read(joinpath(data_dir, "random_params_benchmark.csv"), DataFrame, header=1)
@@ -75,4 +76,4 @@ include(joinpath(source_dir, "PltMD.jl"))
 # plot benchmark with random params by running PltRnd.jl script
 include(joinpath(source_dir, "PltRnd.jl"))
 
-# all figures are saved in the "figures" directory
+# all figures are saved in the "results" directory

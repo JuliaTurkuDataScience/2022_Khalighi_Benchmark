@@ -7,9 +7,9 @@ p1 = plot(nonstiff_benchmark.ExecutionTime,
     group=nonstiff_benchmark.Label,
     shape=nonstiff_benchmark.Shape, markersize=3,
     colour=nonstiff_benchmark.Colour,
-    title="(a)", titleloc=:left, titlefont=font(10),
+    title="(a) Non-stiff example", titleloc=:left,
     xlabel=time_label, ylabel=error_label,
-    legend=false, thickness_scaling=1)
+    legend=false,markerstrokewidth=0.3,ms=3.5)
 
 # Stiff example
 p2 = plot(stiff_benchmark.ExecutionTime,
@@ -17,11 +17,11 @@ p2 = plot(stiff_benchmark.ExecutionTime,
     group=stiff_benchmark.Label,
     shape=stiff_benchmark.Shape, markersize=3,
     colour=stiff_benchmark.Colour,
-    title="(b)", titleloc=:left, titlefont=font(10),
+    title="(b) Stiff example", titleloc=:left,
     xlabel=time_label, ylabel=error_label,
-    legend=false, thickness_scaling=1,
-    legendposition=:outerbottom, legendfontsize=6,
-    legendtitle="Method", legendtitlefontsize=7)
+    legend=false, markerstrokewidth=0.3,ms=3.5,
+    legendposition=:outerbottom, legendfontsize=8,
+    legendtitle="Method", legendtitlefontsize=10)
 
 # High-order example
 p3 = plot(harmonic_benchmark.ExecutionTime,
@@ -29,9 +29,9 @@ p3 = plot(harmonic_benchmark.ExecutionTime,
     group=harmonic_benchmark.Label,
     shape=harmonic_benchmark.Shape, markersize=3,
     colour=harmonic_benchmark.Colour,
-    title="(a)", titleloc=:left, titlefont=font(10),
+    title="(c) High-order example", titleloc=:left,
     xlabel=time_label, ylabel=error_label,
-    legend=false, thickness_scaling=1)
+    legend=false,markerstrokewidth=0.3,ms=3.5)
 
 # define plot layout
 l1 = @layout [[grid(2, 1)] b{0.5w}]

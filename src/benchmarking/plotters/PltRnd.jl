@@ -6,7 +6,7 @@ p7 = scatter(random_params_benchmark.ExecutionTime,
     shape=random_params_benchmark.Shape,
     markersize=3, markerstrokewidth=0,
     colour=random_params_benchmark.Colour,
-    title="(a)", titleloc=:left, titlefont=font(10),
+    # title="(a)", titleloc=:left, titlefont=font(10),
     xlabel=time_label, ylabel=error_label,
     legendposition=:bottomleft, legendtitle="Method")
 
@@ -26,31 +26,31 @@ for method in sort(unique(random_params_benchmark.Method))
 end
 
 # boxplot of log error by solver method with data from the scatter plot above
-p8 = @df random_params_benchmark boxplot(:Label, :Error,
-    yscale=:log, ylabel=error_label,
-    group=random_params_benchmark.Label,
-    colour=random_params_benchmark.Colour,
-    fillcolor=random_params_benchmark.Colour,
-    title="(b)", titleloc=:left, titlefont=font(10),
-    legend=false, markerstrokewidth=0)
-
-# boxplot of log execution time by solver method with data from the scatter plot above
-p9 = @df random_params_benchmark boxplot(:Label, :ExecutionTime,
-    yscale=:log, ylabel=time_label,
-    group=random_params_benchmark.Label,
-    colour=random_params_benchmark.Colour,
-    fillcolor=random_params_benchmark.Colour,
-    title="(c)", titleloc=:left, titlefont=font(10),
-    legend=false, markerstrokewidth=0)
-
-# define plot layout
-l3 = @layout [b{0.5w} grid(2, 1)]
+# p8 = @df random_params_benchmark boxplot(:Label, :Error,
+#     yscale=:log, ylabel=error_label,
+#     group=random_params_benchmark.Label,
+#     colour=random_params_benchmark.Colour,
+#     fillcolor=random_params_benchmark.Colour,
+#     title="(b)", titleloc=:left, titlefont=font(10),
+#     legend=false, markerstrokewidth=0)
+#
+# # boxplot of log execution time by solver method with data from the scatter plot above
+# p9 = @df random_params_benchmark boxplot(:Label, :ExecutionTime,
+#     yscale=:log, ylabel=time_label,
+#     group=random_params_benchmark.Label,
+#     colour=random_params_benchmark.Colour,
+#     fillcolor=random_params_benchmark.Colour,
+#     title="(c)", titleloc=:left, titlefont=font(10),
+#     legend=false, markerstrokewidth=0)
+#
+# # define plot layout
+# l3 = @layout [b{0.5w} grid(2, 1)]
 
 # make multipanel plot
-PltRnd = plot(p7, p8, p9,
-    layout=l3,
-    size=(800, 500))
-
+# PltRnd = plot(p7, p8, p9,
+#     layout=l3,
+#     size=(800, 500))
+    PltRnd = plot(p7)
 # save plot as svg and png files in the "figures" directory
 savefig(PltRnd, joinpath(output_dir, "PltRnd.png"))
 savefig(PltRnd, joinpath(output_dir, "PltRnd.svg"))
