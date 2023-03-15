@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7473300.svg)](https://doi.org/10.5281/zenodo.7646063)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7473300.svg)](https://doi.org/10.5281/zenodo.7473300)
 # FdeSolver: A Julia Package for Solving Fractional Differential Equations
 
 This repository contains the benchmarking results between [FdeSolver.jl](https://github.com/JuliaTurkuDataScience/FdeSolver.jl), [FractionalDiffEq.jl](https://github.com/SciFracX/FractionalDiffEq.jl) and [MATLAB](https://www.dm.uniba.it/members/garrappa/software) solvers.
