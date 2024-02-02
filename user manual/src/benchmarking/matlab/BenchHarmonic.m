@@ -10,7 +10,7 @@ F= @(t,y,param) -param(1)/param(2) *y;
 JF = @(t,y,param) -param(1)/param(2);
 %inputs
 k=16;m=4;
-alpha = 2; param=[k,m];
+alpha = 1.90; param=[k,m];
 t0 = 0 ; T = 10; y0=[1,1];
 
 %benchmarking
@@ -28,7 +28,8 @@ Bench(i,4,1) = timeit(@() fde_pi2_im(alpha,F,JF,t0,T,y0,h,param));
 [t3,y3]=fde_pi1_im(alpha,F,JF,t0,T,y0,h,param);
 [t4,y4]=fde_pi2_im(alpha,F,JF,t0,T,y0,h,param);
 %exact solution
-Exact=y0(1).*cos(sqrt(k/m).*t1)+y0(2)./((sqrt(k/m))).*sin(sqrt(k/m).*t1);
+% Exact=y0(1).*cos(sqrt(k/m).*t1)+y0(2)./((sqrt(k/m))).*sin(sqrt(k/m).*t1);
+Exact=y0(1).*mlf(alpha,1,-k/m*t1.^alpha)+y0(1).*t1.*mlf(alpha,2,-k/m*t1.^alpha);%exact solution
 
 Bench(i,1,2)=norm(y1-Exact);
 Bench(i,2,2)=norm(y2-Exact);

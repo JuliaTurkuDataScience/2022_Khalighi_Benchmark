@@ -46,10 +46,12 @@ aesthetics = Dict("J-PC" => ("J1", :circle, "firebrick3"),
                   "M-PI-EX" => ("M4", :rtriangle, "mediumblue"),
                   "J-PECE" => ("J3", :circle, "darkorange"),
                   "J-PI-EX" => ("J4", :hexagon, "darkorange"),
-                  "J-NonLinearAlg" => ("J5", :star5, "darkorange"),
-                  "J-FLMMBDF" => ("J6", :utriangle, "darkorange"),
-                  "J-FLMMNewtonG" => ("J7", :dtriangle, "darkorange"),
-                  "J-FLMMTrap" => ("J8", :pentagon, "darkorange"))
+                  "J-GL" => ("J5", :star5, "darkorange"),
+                  "J-Euler" => ("J6", :utriangle, "darkorange"),
+                  "J-NonLinearAlg" => ("J7", :star5, "darkorange"),
+                  "J-FLMMBDF" => ("J8", :utriangle, "darkorange"),
+                  "J-FLMMNewtonG" => ("J9", :dtriangle, "darkorange"),
+                  "J-FLMMTrap" => ("J10", :pentagon, "darkorange"))
 
 # add label, shape and colour aesthetics as columns to the respective dataframes
 for df in [nonstiff_benchmark, stiff_benchmark, harmonic_benchmark, lotka_volterra_benchmark, sir_benchmark, random_params_benchmark]
